@@ -1,3 +1,7 @@
+# Set-up
+1) Clone: `git clone https://github.com/ArijaK/blockchain_coupons.git`
+2) Navigate to folder: `cd blockchain_coupons`
+
 # Build
 1) build (~3 min): `docker compose build`
 
