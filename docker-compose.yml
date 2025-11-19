@@ -1,9 +1,13 @@
+version: "3.9"
+
 services:
   ecoupons-dev:
     build: .
     container_name: ecoupons-dev
     working_dir: /app
-    volumes:
-      - .:/app
+    ports:
+      - "8545:8545"
+      - "3000:3000"
+    # volumes:
+    #   - .:/app       # Mount entire project
     tty: true
-    command: bash
