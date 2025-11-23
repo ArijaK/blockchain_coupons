@@ -52,7 +52,7 @@ To be able to import from OpenZeppelin (these imports are present in contracts),
 
     npm install
 
-To run tests, simply run:
+To run tests, simply run (make sure you have ran `wake up` before this):
 
     wake test tests/test_example.py
 
