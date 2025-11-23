@@ -43,6 +43,17 @@
 # Exit stuff:
 * Usually `Ctrl + C` or `Ctrl + Z` should work, if not might try `q`, but at some point killing terminal might be The Option 
 
+# If you want to avoid using Docker for quick tests and stuff
+You can use VSCode with Solidity (Wake) extension or (probably) any other code editor (VSCode too) together with Wake framework. Wake framework can be obtained by simply running `pip install eth-wake` in your terminal. Please pay attention to write exactly `eth-wake`, not `wake`, as `wake` is a completely different project.
 
+In case you cannot deploy contracts, make sure you have installed Anvil. Installation guides can be found [here](https://getfoundry.sh/introduction/installation/).
 
+To be able to import from OpenZeppelin (these imports are present in contracts), you shall install necessary dependencies by running:
 
+    npm install
+
+To run tests, simply run:
+
+    wake test tests/test_example.py
+
+Or if you want to test contracts via VSCode Solidity (Wake) extension, open Solidity: Deploy & Interact tab, click 'Compile all' and deploy necessary contracts. Then switch to 'Interact' section and do necessary interactions.
