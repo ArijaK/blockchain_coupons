@@ -1,10 +1,9 @@
 FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
-
 WORKDIR /app
 
-# System deps
+# System dependencies
 RUN apt-get update && apt-get install -y \
     python3 python3-pip \
     git curl build-essential \
@@ -20,9 +19,6 @@ RUN curl -L https://foundry.paradigm.xyz | bash \
 
 ENV PATH="/root/.foundry/bin:${PATH}"
 
-# pytypes
-ENV PYTHONPATH=/app/pytypes:$PYTHONPATH
-
 # Wake
 RUN pip3 install eth-wake
 
@@ -30,14 +26,17 @@ RUN pip3 install eth-wake
 COPY package*.json ./
 RUN npm install --legacy-peer-deps
 
-# project files
+# Copy project files
 COPY . .
 
-# Compile contracts to generate Python bindings (pytypes)
+# Compile contracts 
 RUN wake compile
 
-# Set PYTHONPATH so Python can find pytypes
-ENV PYTHONPATH=/app
+# Generate Python bindings for pytypes
+RUN wake up
 
-# Default command: drop into bash for interactive use
+# Set PYTHONPATH so Python can find pytypes
+ENV PYTHONPATH=/app/pytypes:$PYTHONPATH
+
+# Default command
 CMD ["bash"]
