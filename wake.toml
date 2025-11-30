@@ -21,3 +21,6 @@ cmd_args = "-k istanbul -q"
 
 [testing.hardhat]
 cmd_args = ""
+
+[python]
+out_dir = "pytypes"
