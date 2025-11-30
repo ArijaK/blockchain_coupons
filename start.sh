@@ -1,24 +1,15 @@
 #!/bin/bash
-set -e
 
-# Compile contracts
-npx hardhat compile
+# CURRRRRRENTLY UNUSED
 
-# Start local Hardhat node in background
-npx hardhat node --hostname 0.0.0.0 > /app/hardhat.log 2>&1 &
+# start Anvil in background
+anvil &
 
-sleep 5
+# Give Anvil a second to start
+sleep 2
 
-# Deploy contracts
-npx hardhat run scripts/deploy.js --network localhost
+# Run Wake tests
+wake test tests/test_example.py
 
-# Print deployed address
-echo "Deployed contract address."
-cat /app/deployedAddress.txt
-
-# Interact with deployed contract
-npx hardhat run scripts/interact.js --network localhost
-
-
-# Keep container alive
-exec bash
+# Keep container alive if needed
+tail -f /dev/null
