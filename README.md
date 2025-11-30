@@ -25,7 +25,7 @@ Or if you want to test contracts via VSCode Solidity (Wake) extension, open Soli
 ## Run_1 
 2) enter bash: `docker run -it --rm wake-env`
 3) inside, run anvil in background: `anvil &`
-4) run tests: `wake test tests/test_example.py`
+4) run tests: `wake test tests/test_initial.py`
 
 ## Run_2
 2) 
