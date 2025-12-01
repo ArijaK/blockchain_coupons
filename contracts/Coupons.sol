@@ -10,6 +10,9 @@ contract Coupon1155 is ERC1155, Ownable(msg.sender) {
     // NOTE: Let's hope we wont have more than (1x10^77) coupon types created
     uint256 public couponIDCounter;
 
+    // redeemer list - for faster look up
+    mapping(address => bool) public isAllowedRedeemer;
+
     // Lookup table to check who is issuer
     mapping(address => bool) public isIssuer;
 
@@ -23,7 +26,14 @@ contract Coupon1155 is ERC1155, Ownable(msg.sender) {
     function addIssuer(address account) external onlyOwner {
         isIssuer[account] = true;
     }
-    
+
+    // Create redeemers list
+    function addRedeemers(address[] memory redeemers) public {
+        for (uint256 i = 0; i < redeemers.length; i++) {
+            isAllowedRedeemer[redeemers[i]] = true;
+        }
+    }
+
     // Issuers can create (mint) new coupons
     // TODO: Add expiry date (uint256 expiryTimestamp)
     // require(expiryTimestamp > block.timestamp, "Expiry must be in future");
@@ -31,7 +41,10 @@ contract Coupon1155 is ERC1155, Ownable(msg.sender) {
     // Lookup table: mapping(uint256 => uint256) public couponExpiry;
     // Redemption: require(block.timestamp <= couponExpiry[couponId], "Coupon expired");
     function mint(address to, uint256 amount) external {
-        require(isIssuer[msg.sender], "Not authorized to create (mint) coupons");
+        require(
+            isIssuer[msg.sender],
+            "Not authorized to create (mint) coupons"
+        );
 
         uint256 couponID = ++couponIDCounter;
         // In "" metadata can be added (see constructor)
@@ -41,7 +54,7 @@ contract Coupon1155 is ERC1155, Ownable(msg.sender) {
     // Everyone can distribute coupons (without QR code option)
     // NOTE: If you want to restrict distribution
     // function distribute(
-    //     address from, address to, 
+    //     address from, address to,
     //     uint256 couponID, uint256 amount
     // ) external {
     //     require(isIssuer[msg.sender], "Not authorized to distribute");
@@ -57,8 +70,13 @@ contract Coupon1155 is ERC1155, Ownable(msg.sender) {
         // only 99 will remain in circulation (1 will be unusable anymore)
         // If there was 1 such coupon and 1 was burned,
         // no more will remain, but the ID will still exist
+
+        // only authorized redeemers can redeem
+        require(
+            isAllowedRedeemer[msg.sender],
+            "Not authorized to redeem coupon."
+        );
+
         _burn(msg.sender, couponID, amount);
-        // TODO: Add redemption logic here
-        // (simple burning is just a placeholder for start)
     }
 }
