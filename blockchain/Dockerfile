@@ -35,8 +35,8 @@ RUN wake compile
 # Generate Python bindings for pytypes
 RUN wake up
 
-# Set PYTHONPATH so Python can find pytypes
-ENV PYTHONPATH=/app/pytypes:$PYTHONPATH
+# # Set PYTHONPATH so Python can find pytypes
+# ENV PYTHONPATH=/app/pytypes:$PYTHONPATH
 
 # Default command
 CMD ["bash"]
