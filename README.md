@@ -15,7 +15,7 @@ To run tests, simply run (make sure you have ran `wake up` before this):
 
     wake test tests/test_example.py
 
-Or if you want to test contracts via VSCode Solidity (Wake) extension, open Solidity: Deploy & Interact tab, click 'Compile all' and deploy necessary contracts. Then switch to 'Interact' section and do necessary interactions. Make sure you are inside `blockchain_coupons/blockcahin/` directory before you proceed, otherwise you might not be able to do the testing. 
+Or if you want to test contracts via VSCode Solidity (Wake) extension, open Solidity: Deploy & Interact tab, click 'Compile all' and deploy necessary contracts. Then switch to 'Interact' section and do necessary interactions. Make sure you are inside `blockchain_coupons/blockchain/` directory before you proceed, otherwise you might not be able to do the testing. 
 
 # Work option_2:
 
