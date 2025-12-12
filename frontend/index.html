@@ -1,37 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
   <meta charset="UTF-8">
-  <title>Solidity Frontend</title>
-  <script src="https://cdn.jsdelivr.net/npm/ethers@6/dist/ethers.min.js"></script>
+  <title>Coupon App Prototype</title>
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-  <h1>Greeter Contract</h1>
-  <p id="greeting">Loading...</p>
-  <button id="refresh">Refresh Greeting</button>
+  <h1>Coupon App Prototype</h1>
 
-  <script>
-    // Replace with your deployed contract address
-    const contractAddress = "YOUR_CONTRACT_ADDRESS_HERE";
+  <button id="createCouponBtn">Create Coupon</button>
+  <button id="mintCouponBtn">Mint Coupon</button>
+  <div id="log"></div>
 
-    // Replace with ABI from artifacts/contracts/Greeter.sol/Greeter.json
-    const contractABI = [
-      "function greeting() view returns (string)",
-      "function setGreeting(string)"
-    ];
-
-    async function loadGreeting() {
-      // Connect to local Hardhat node
-      const provider = new ethers.JsonRpcProvider("http://localhost:8545");
-      const contract = new ethers.Contract(contractAddress, contractABI, provider);
-
-      const currentGreeting = await contract.greeting();
-      document.getElementById("greeting").textContent = currentGreeting;
-    }
-
-    document.getElementById("refresh").addEventListener("click", loadGreeting);
-
-    loadGreeting(); // Initial load
-  </script>
+  <script src="script.js"></script>
 </body>
+
 </html>
