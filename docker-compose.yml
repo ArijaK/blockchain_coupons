@@ -1,0 +1,35 @@
+version: "3.9"
+
+services:
+  blockchain:
+    build: ./blockchain
+    container_name: blockchain_node
+    ports:
+      - "8545:8545"    # RPC port
+      - "30303:30303"  # P2P port
+    command: bash -c "anvil &"  # or your dev blockchain start command
+
+  backend:
+    build: ./backend
+    container_name: backend_server
+    ports:
+      - "8000:8000"
+    depends_on:
+      - blockchain
+    environment:
+      BLOCKCHAIN_RPC: http://blockchain:8545  # backend can reach blockchain container by name
+
+  # database:
+  #   image: postgres:15
+  #   container_name: coupon_db
+  #   environment:
+  #     POSTGRES_USER: user
+  #     POSTGRES_PASSWORD: password
+  #     POSTGRES_DB: coupons
+  #   ports:
+  #     - "5432:5432"
+  #   volumes:
+  #     - db_data:/var/lib/postgresql/data
+
+# volumes:
+#   db_data:

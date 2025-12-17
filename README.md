@@ -1,7 +1,16 @@
-# Solidity
-## Set-up
+# Set-up
 1) Clone: `git clone https://github.com/ArijaK/blockchain_coupons.git`
 2) Navigate to folder: `cd blockchain_coupons`
+
+# All
+1) Make sure you are inside `blockchain_coupons/`
+2) To set upp all docker containers (currently backend and blockchain), call `docker-compose up --build` or `docker-compose up --build -d` to get it in "detached" mode
+3) Access  
+    3.1) Frontend might be at: `http://localhost:5500` (untested!)  
+    3.2) Backend at: `http://localhost:8000` 
+
+
+# Solidity
 
 ## Work option_1: If you want to avoid using Docker for quick tests and stuff
 You can use VSCode with Solidity (Wake) extension or (probably) any other code editor (VSCode too) together with Wake framework. Wake framework can be obtained by simply running `pip install eth-wake` in your terminal. Please pay attention to write exactly `eth-wake`, not `wake`, as `wake` is a completely different project.
@@ -21,7 +30,8 @@ Or if you want to test contracts via VSCode Solidity (Wake) extension, open Soli
 ## Work option_2:
 
 ### Build
-1) build (~3 min): `docker build -t wake-env .`
+1) Make sure you are inside `blockchain_coupons/blockchain/`
+2) build (~3 min): `docker build -t wake-env .`  
 
 ### Run_1 
 2) enter bash: `docker run -it --rm wake-env`
