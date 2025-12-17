@@ -10,6 +10,8 @@ def test_coupon():
     # Deploy contract
     coupon = Coupon1155.deploy()
 
+    print("Contract address:", coupon.address)
+
     owner = chain.accounts[0]
     issuer = chain.accounts[1]
     other = chain.accounts[2]
@@ -22,6 +24,9 @@ def test_coupon():
         coupon.addIssuer(other, from_=issuer)
 
     coupon.mint(issuer, 10, from_=issuer)
+    unit_ids = coupon.getUnitIDs(1)  # couponID = 1
+    print("Unit IDs for QR codes:", unit_ids)
+
     # Only issuer can mint coupons
     with must_revert():
         coupon.mint(other, 10, from_=other)
@@ -52,14 +57,18 @@ def test_coupon():
     print("Redeem 2 coupons")
     # Redeem 2 coupons
     try:
-        coupon.redeem(couponID=1, amount=2, from_=other)
-        print("  other redemption worked")
+        coupon.redeem(couponID=1, unitID=unit_ids[0], from_=other)
+        print(f"  other redeemed unit {unit_ids[0]} successfully")
+        coupon.redeem(couponID=1, unitID=unit_ids[1], from_=other)
+        print(f"  other redeemed unit {unit_ids[1]} successfully")
     except Exception as e:
         print("  redeem(other) reverted: ", e)
 
     try:
-        coupon.redeem(couponID=1, amount=2, from_=allowed_redeemer_1)
-        print("  allowed_redeemer_1 redemption worked")
+        coupon.redeem(couponID=1, unitID=unit_ids[0], from_=allowed_redeemer_1)
+        print(f"  allowed_redeemer_1 redeemed unit {unit_ids[0]} successfully")
+        coupon.redeem(couponID=1, unitID=unit_ids[1], from_=allowed_redeemer_1)
+        print(f"  allowed_redeemer_1 redeemed unit {unit_ids[1]} successfully")
     except Exception as e:
         print("  redeem(allowed_redeemer_1) reverted: ", e)
 
