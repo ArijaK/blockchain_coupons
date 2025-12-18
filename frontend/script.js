@@ -2,31 +2,63 @@
 // 1) Šis ļauj taisīt frontend (urā)
 // 2) Vēlāk, lai nebūtu "Dummy function", jāizdomā, vai mums ir
 //      JS -> Solidity
-//      JS -> Python (api server small) -> Solidity  
+//      JS -> Python (api server small) -> Solidity
+///////////////////////////////////////////////////////////////////////
 
-const logDiv = document.getElementById("log");
 
-// Dummy function to simulate "create coupon"
-function createCoupon() {
-    const couponId = Math.floor(Math.random() * 1000);
-    logDiv.innerHTML += `<p>Coupon created with ID: ${couponId}</p>`;
-    return couponId;
+// Show only one of views simultaneously
+function showView(viewId, button) {
+    // hide all views
+    const views = document.querySelectorAll("#views > div");
+    views.forEach(v => v.style.display = "none");
+
+    // show selected view
+    document.getElementById(viewId).style.display = "block";
+
+    // remove active class from all buttons
+    const buttons = document.querySelectorAll("#navigation button");
+    buttons.forEach(b => b.classList.remove("active"));
+
+    // add active to clicked button
+    button.classList.add("active");
 }
 
-// Dummy function to simulate "mint coupon"
-function mintCoupon(couponId, amount) {
-    logDiv.innerHTML += `<p>Minted ${amount} of coupon ${couponId}</p>`;
-}
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("mint_shortcut").onclick = function () { showView("mint_view", this); };
+    document.getElementById("show_shortcut").onclick = function () { showView("show_view", this); };
+    document.getElementById("profile_shortcut").onclick = function () { showView("profile_view", this); };
+});
 
-// Connect buttons to dummy functions
-document.getElementById("createCouponBtn").onclick = () => {
-    window.currentCoupon = createCoupon();
-};
 
-document.getElementById("mintCouponBtn").onclick = () => {
-    if (!window.currentCoupon) {
-        alert("Create a coupon first!");
-        return;
-    }
-    mintCoupon(window.currentCoupon, 10);
-};
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////
+// const logDiv = document.getElementById("log");
+
+// // Dummy function to simulate "create coupon"
+// function createCoupon() {
+//     const couponId = Math.floor(Math.random() * 1000);
+//     logDiv.innerHTML += `<p>Coupon created with ID: ${couponId}</p>`;
+//     return couponId;
+// }
+
+// // Dummy function to simulate "mint coupon"
+// function mintCoupon(couponId, amount) {
+//     logDiv.innerHTML += `<p>Minted ${amount} of coupon ${couponId}</p>`;
+// }
+
+// // Connect buttons to dummy functions
+// document.getElementById("createCouponBtn").onclick = () => {
+//     window.currentCoupon = createCoupon();
+// };
+
+// document.getElementById("mintCouponBtn").onclick = () => {
+//     if (!window.currentCoupon) {
+//         alert("Create a coupon first!");
+//         return;
+//     }
+//     mintCoupon(window.currentCoupon, 10);
+// };
