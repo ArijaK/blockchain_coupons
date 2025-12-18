@@ -1,23 +1,61 @@
 version: "3.9"
-
 services:
   blockchain:
-    build: ./blockchain
+    build:
+      context: .
+      target: blockchain-stage
     container_name: blockchain_node
     ports:
-      - "8545:8545"    # RPC port
-      - "30303:30303"  # P2P port
-    command: bash -c "anvil &"  # or your dev blockchain start command
+      - "8545:8545"
+      - "30303:30303"
+    # command: anvil --host 0.0.0.0
+    # command: wake up 
+    command: anvil --host 0.0.0.0 --port 8545
+
+
+
 
   backend:
-    build: ./backend
+    build:
+      context: .
+      target: backend-stage
     container_name: backend_server
     ports:
       - "8000:8000"
     depends_on:
       - blockchain
     environment:
-      BLOCKCHAIN_RPC: http://blockchain:8545  # backend can reach blockchain container by name
+      PYTHONPATH: /app/blockchain/pytypes
+      BLOCKCHAIN_RPC: http://blockchain:8545
+
+
+
+
+# services:
+#   blockchain-base:
+#     build:
+#       context: ./docker_base
+#     image: blockchain-base
+
+#   blockchain:
+#     build: ./blockchain
+#     container_name: blockchain_node
+#     ports:
+#       - "8545:8545"
+#       - "30303:30303"
+#     depends_on:
+#       - blockchain-base
+
+#   backend:
+#     build: ./backend
+#     container_name: backend_server
+#     ports:
+#       - "8000:8000"
+#     depends_on:
+#       - blockchain
+#       - blockchain-base
+#     environment:
+#       PYTHONPATH: /app/pytypes
 
   # database:
   #   image: postgres:15
