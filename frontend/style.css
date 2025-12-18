@@ -1,16 +1,59 @@
 body {
     font-family: Arial, sans-serif;
-    text-align: center;
-    padding: 50px;
+    /* text-align: center; */
+
 }
 
-button {
+main {
+    padding: 20px;
+    border-color: red;
+    border-width: 2px;
+    border-style: dashed;
+}
+
+/* Navigation tabs and buttons */
+#navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 10px 5px 10px;
+    /* border-color: blue;
+    border-width: 2px; */
+    /* border-style: dashed; */
+}
+
+.left-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+#navigation button {
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
+    border-radius: 25px;
+    border-width: 1px;
+    background: none;
+    transition: background 0.2s, color 0.2s;
+    border-color: rgb(200, 200, 200)
 }
 
-#status {
-    margin-top: 20px;
-    font-weight: bold;
+#navigation button:hover {
+    background: rgba(50, 170, 255);
+    color: white;
+}
+
+#navigation button.active {
+    background: rgba(30, 144, 255);
+    color: white;
+}
+
+
+/* Visibility of views (exactly one should show at all times), default */
+#views>div {
+    display: none;
+}
+
+#views>#mint_view {
+    display: block;
 }
