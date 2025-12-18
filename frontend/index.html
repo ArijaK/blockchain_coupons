@@ -8,20 +8,44 @@
 </head>
 
 <body>
+
   <nav id="navigation">
     <div class="left-buttons">
-      <button id="mint_shortcut" onclick="showView('mint_view')">Mint Coupon</button>
+      <button id="mint_shortcut" onclick="showView('mint_view')" class="active">Mint Coupon</button>
       <button id="show_shortcut" onclick="showView('show_view')">Show Coupons</button>
     </div>
     <button id="profile_shortcut" onclick="showView('profile_view')">Profile</button>
   </nav>
 
-
-
   <main id="views">
-    <div id="mint_view">Mint view (add from drawio)</div>
+
+    <div id="mint_view">
+      <!--  -->
+      <form action="">
+        <label for="coupon_name">Coupon name</label>
+        <input type="text" id="coupon_name" name="coupon_name" placeholder="November campaign 2025"><br>
+        <label for="usable_date">Usable through:</label>
+        <div class="unfinished">TODO calendar thing</div>
+        <label for="count">Count:</label>
+        <div class="unfinished">TODO scroll count thing</div>
+        <label for="unique">Unique:</label>
+        <div class="unfinished">TODO checkbox</div>
+        <div class="unfinished">i am also thinking that we need info on hover</div>
+        <label for="description">Description:</label>
+        <div class="unfinished">TODO description text box</div>
+        <label for="redeem_at">Redeem at:</label>
+        <div class="unfinished">TODO choose from list</div>
+        <div class="unfinished">TODO if self in list = auto approve, if anyone else in list: wait for approve</div>
+        <div class="unfinished"> TODO need view where can approve requests from others to be redeemer</div>
+        <br><br>
+        <input id="mint_done_button" type="submit" value="DONE">
+      </form>
+    </div>
+
     <div id="show_view">Show view (add from drawio)</div>
+
     <div id="profile_view">Profile view</div>
+    
   </main>
   <script src="script.js"></script>
 </body>
