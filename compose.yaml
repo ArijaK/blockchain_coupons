@@ -1,0 +1,36 @@
+services:
+  blockchain:
+    image: wake-env
+    container_name: wake-env
+    build:
+      context: blockchain
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./blockchain:/usr/src/blockchain
+  db:
+    image: postgres
+    restart: unless-stopped
+    shm_size: 128mb
+    env_file:
+      - .env
+    environment:
+      - PGDATA=/var/lib/postgresql/16/docker
+    volumes:
+      - pgdata:/var/lib/postgresql/16/docker
+      - ./database/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+    ports:
+      - "5432:5432"
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+volumes:
+  pgdata:
