@@ -1,9 +1,12 @@
-version: "3.9"
-
 services:
   blockchain:
-    build: ./blockchain
+    image: blockchain_node
     container_name: blockchain_node
+    build: 
+      context: ./blockchain
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./blockchain:/usr/src/blockchain
     ports:
       - "8545:8545"    # RPC port
       - "30303:30303"  # P2P port
@@ -18,18 +21,31 @@ services:
       - blockchain
     environment:
       BLOCKCHAIN_RPC: http://blockchain:8545  # backend can reach blockchain container by name
+  
+  db:
+    image: postgres
+    restart: unless-stopped
+    shm_size: 128mb
+    env_file:
+      - .env
+    environment:
+      - PGDATA=/var/lib/postgresql/16/docker
+    volumes:
+      - pgdata:/var/lib/postgresql/16/docker
+      - ./database/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+    ports:
+      - "5432:5432"
 
-  # database:
-  #   image: postgres:15
-  #   container_name: coupon_db
-  #   environment:
-  #     POSTGRES_USER: user
-  #     POSTGRES_PASSWORD: password
-  #     POSTGRES_DB: coupons
-  #   ports:
-  #     - "5432:5432"
-  #   volumes:
-  #     - db_data:/var/lib/postgresql/data
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
 
-# volumes:
-#   db_data:
+volumes:
+  pgdata:
