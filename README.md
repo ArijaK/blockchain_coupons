@@ -1,3 +1,5 @@
+# Warning! Due to framework updates, some guides written here will soon be outdated and rewritten to newer ones
+
 # Set-up
 1) Clone: `git clone https://github.com/ArijaK/blockchain_coupons.git`
 2) Navigate to folder: `cd blockchain_coupons`
