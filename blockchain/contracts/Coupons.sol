@@ -62,7 +62,7 @@ contract Coupon1155 is ERC1155, Ownable(msg.sender) {
     // NOTE: We can add burning when expiry date is reached
 
     // Redemption (burning)
-    function redeem(uint256 couponID, uint256 unitID) external {
+    function redeem(uint256 couponID) external {
         // NOTE: Removes from circulation, does not destroy ID
         // If there were 100 such coupons and 1 was burned,
         // only 99 will remain in circulation (1 will be unusable anymore)
