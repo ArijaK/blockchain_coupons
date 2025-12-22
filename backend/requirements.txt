@@ -1,3 +1,0 @@
-# could be this or pyproject.toml
-fastapi
-uvicorn
