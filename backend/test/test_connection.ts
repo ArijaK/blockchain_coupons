@@ -6,10 +6,9 @@ import {ethers} from "ethers";
 dotenv.config();
 
 async function checkPostgres() {
-  console.log("Checking Postgres connection...");
+  console.log("Connecting to Postgres via ", process.env.DATABASE_URL);
   const client = new Client({
     connectionString: process.env.DATABASE_URL,
-    
   });
 
   try {
@@ -17,14 +16,14 @@ async function checkPostgres() {
     const result = await client.query("SELECT NOW()");
     console.log("Postgres OK:", result.rows[0]);
   } catch (err) {
-    console.error("Postgres ERROR:", err);
+    console.error("Postgres ERROR:\n", err);
   } finally {
     await client.end();
   }
 }
 
 async function checkBlockchain() {
-  console.log("Checking blockchain connection...");
+  console.log("Connecting to blockchain via ", process.env.RPC_URL);
 
   try {
     const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
@@ -38,7 +37,7 @@ async function checkBlockchain() {
     console.log("  Chain ID:", network.chainId);
     console.log("  First account:", accounts[0]);
   } catch (err) {
-    console.error("Blockchain ERROR:", err);
+    console.error("Blockchain ERROR:\n", err);
   }
 }
 

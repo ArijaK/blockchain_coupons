@@ -11,10 +11,11 @@ async function main() {
   await client.connect();
   console.log("Connected to Postgres");
 
+  console.log("Inserting account_id `0xdf3e18d64bc6a983f673ab319ccae4f1a57c7097` into table `users`");
   await client.query(`INSERT INTO users (account_id) VALUES ('0xdf3e18d64bc6a983f673ab319ccae4f1a57c7097')`);
 
   const result = await client.query(`SELECT * FROM users`);
-  console.log("Latest row:", result.rows[0]);
+  console.log("Latest table `users` row:", result.rows[0]);
 
   await client.end();
 }

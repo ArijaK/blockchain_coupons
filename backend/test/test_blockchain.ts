@@ -6,7 +6,7 @@ dotenv.config();
 
 async function main() {
   const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
-  const signer = await provider.getSigner();
+  const signer = new ethers.Wallet(process.env.PRIVATE_KEY!, provider);
 
   const coupons = new ethers.Contract(
     process.env.COUPON_ADDRESS!,
@@ -15,11 +15,13 @@ async function main() {
   );
 
   console.log("Calling mint...");
-  const tx = await coupons.mint(await signer.getAddress(), 1);
-  console.log("Mint tx sent:", tx.hash);
+  const transaction = await coupons.mint(await signer.getAddress(), 1);
+  console.log("Mint transaction hash:", transaction.hash);
 
-  const receipt = await tx.wait();
+  const receipt = await transaction.wait();
   console.log("Mint confirmed in block:", receipt.blockNumber);
+  console.log("Mint status:", receipt.status);
+
 }
 
 main().catch(console.error);
