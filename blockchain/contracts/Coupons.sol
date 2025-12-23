@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 // msg.sender for Ownable makes the deployer the owner
-contract Coupon1155 is ERC1155, Ownable(msg.sender) {
+contract Coupons is ERC1155, Ownable(msg.sender) {
   // Voucher type (maximum 2^256 types possible)
   // NOTE: Let's hope we wont have more than (1x10^77) coupon types created
   uint256 public couponIDCounter;
