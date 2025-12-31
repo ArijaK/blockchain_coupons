@@ -47,9 +47,6 @@ services:
     depends_on:
       - db
       - blockchain
-    # Solution for dev purposes
-    volumes:
-      - ./blockchain/artifacts/contracts:/blockchain/artifacts/contracts
     env_file:
       - ./backend/.env
     environment:

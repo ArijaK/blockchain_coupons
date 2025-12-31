@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import { ethers } from "ethers";
-import couponJSON from "../../blockchain/artifacts/contracts/Coupons.sol/Coupons.json" with { type: "json" };
+import couponJSON from "../abis/Coupons.json" with { type: "json" };
 
 dotenv.config();
 
