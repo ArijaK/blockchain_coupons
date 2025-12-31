@@ -47,6 +47,10 @@ To set-up and start all Docker containers, call `docker-compose up --build` or `
 
 ### Run a command inside a running container
 
+Check containers:
+
+    docker ps  
+
 Open a shell to run multiple commands:
 
     docker exec -it container_name sh
