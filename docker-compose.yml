@@ -1,27 +1,14 @@
 services:
   blockchain:
-    image: blockchain_node
-    container_name: blockchain_node
+    image: blockchain
+    container_name: blockchain_server
     build: 
       context: ./blockchain
-      dockerfile: ./Dockerfile
-    volumes:
-      - ./blockchain:/usr/src/blockchain
     ports:
       - "8545:8545"    # RPC port
       - "30303:30303"  # P2P port
-    command: bash -c "anvil &"  # or your dev blockchain start command
-
-  backend:
-    build: ./backend
-    container_name: backend_server
-    ports:
-      - "8000:8000"
-    depends_on:
-      - blockchain
-    environment:
-      BLOCKCHAIN_RPC: http://blockchain:8545  # backend can reach blockchain container by name
-  
+    networks:
+      - devnet
   db:
     image: postgres
     restart: unless-stopped
@@ -40,12 +27,36 @@ services:
       retries: 5
     ports:
       - "5432:5432"
+    networks:
+      - devnet
 
   adminer:
     image: adminer
     restart: always
     ports:
       - 8080:8080
+    networks:
+      - devnet
+  
+  backend:
+    image: backend
+    container_name: backend_server
+    build: ./backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - blockchain
+    env_file:
+      - ./backend/.env
+    environment:
+      RPC_URL: http://blockchain:8545
+    networks:
+      - devnet
+
 
 volumes:
   pgdata:
+
+networks:
+  devnet:

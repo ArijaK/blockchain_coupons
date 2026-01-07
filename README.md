@@ -1,64 +1,66 @@
-# Warning! Due to framework updates, some guides written here will soon be outdated and rewritten to newer ones
+# Getting Started
 
-# Set-up
+For more details please view each respective directory.
+
 1) Clone: `git clone https://github.com/ArijaK/blockchain_coupons.git`
-2) Navigate to folder: `cd blockchain_coupons`
 
-# All
-1) Make sure you are inside `blockchain_coupons/`
-2) To set upp all docker containers (currently backend and blockchain), call `docker-compose up --build` or `docker-compose up --build -d` to get it in "detached" mode
-3) Access  
-    3.1) Frontend might be at: `http://localhost:5500` (untested!)  
-    3.2) Backend at: `http://localhost:8000` 
+2) Navigate to the directory: `cd blockchain_coupons`
+
+3) Access ports:
+    * Frontend: `5500` (untested!)
+    * Backend: `8000`
+    * Blockchain: `8545` (RPC)
+    * Database: `5432`
+
+## Docker setup
+
+Services are described in `docker-compose.yml` file. It is important to notice that environment variables are loaded from two .env files: `.env` and `./backend/.env`, which are not a part of this repository due to being gitignored, but are necessary for the project to run.
+
+Create `.env` file in `blockchain_coupons` directory with following variables:
+
+    POSTGRES_USER=name
+    POSTGRES_PASSWORD=password
+    POSTGRES_DB=database_name
+
+Create `.env` file in `blockchain_coupons/backend/` directory with following variables:
+
+    # Outside Docker
+    DATABASE_URL=postgres://name:password@localhost:5432/database_name
+    RPC_URL=http://localhost:8545/
+
+    # Inside Docker
+    DATABASE_URL=postgres://name:password@db:5432/database_name
+    RPC_URL=http://blockchain:8545
+
+    # Blockchain connection details
+    # Deployed contract address (check blockchain service output after deploying contract)
+    COUPON_ADDRESS=0x5fbdb2315678afecb367f032d93f642f64180aa3
+    # Private key of a blockchain account (check blockchain service output)
+    PRIVATE_KEY=0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+
+One must be careful with the backend `.env` file. `DATABASE_URL` must not contradict `.env` file of `blockchain_coupons` directory, which means it must be in format:
+    
+    postgres://POSTGRES_USER:POSTGRES_PASSWORD@HOST:PORT/POSTGRES_DB
+
+### Start all services (containers)
+To set-up and start all Docker containers, call `docker-compose up --build` or `docker-compose up --build -d` to get it in "detached" mode.
+
+### Run a command inside a running container
+
+Check containers:
+
+    docker ps  
+
+Open a shell to run multiple commands:
+
+    docker exec -it container_name sh
+
+Run a single command:
+
+    docker exec container_name [COMMAND]
 
 
-# Solidity
+### Stop all services (containers)
+To stop running all Docker containers, call `docker compose stop`.
 
-## Work option_1: If you want to avoid using Docker for quick tests and stuff
-You can use VSCode with Solidity (Wake) extension or (probably) any other code editor (VSCode too) together with Wake framework. Wake framework can be obtained by simply running `pip install eth-wake` in your terminal. Please pay attention to write exactly `eth-wake`, not `wake`, as `wake` is a completely different project.
-
-In case you cannot deploy contracts, make sure you have installed Anvil. Installation guides can be found [here](https://getfoundry.sh/introduction/installation/).
-
-To be able to import from OpenZeppelin (these imports are present in contracts), you shall install necessary dependencies by running:
-
-    npm install
-
-To run tests, simply run (make sure you have ran `wake up` before this):
-
-    wake test tests/test_example.py
-
-Or if you want to test contracts via VSCode Solidity (Wake) extension, open Solidity: Deploy & Interact tab, click 'Compile all' and deploy necessary contracts. Then switch to 'Interact' section and do necessary interactions. Make sure you are inside `blockchain_coupons/blockchain/` directory before you proceed, otherwise you might not be able to do the testing. 
-
-## Work option_2:
-
-### Build
-1) Make sure you are inside `blockchain_coupons/blockchain/`
-2) build (~3 min): `docker build -t wake-env .`  
-
-### Run_1 
-2) enter bash: `docker run -it --rm wake-env`
-3) inside, run anvil in background: `anvil &` (then press enter, to move to new line)
-4) run tests: `wake test tests/test_initial.py`
-
-
-### Develop (not updated)
-* Currently after each changes, one has to [build](#build) docker again, check the effect
-    * it could be avoided by adding "mount" in docker-compose.yml file, but i am not ready to do it now
-
-### Debug (not updated)
-* check docker containers: `docker ps`
-* entering in image if container does not exist (laikam:)): `docker compose run --rm --entrypoint bash ecoupons-dev`
-* check logs (why failed / did not return anything): `docker compose logs ecoupons-dev`
-* Clean install
-    * `docker compose down --remove-orphans`
-    * `docker builder prune --all --force`
-    * `docker compose build --no-cache`
-
-### Exit (docker) stuff:
-* Usually `Ctrl + C` or `Ctrl + Z` should work, if not might try `q`, but at some point killing terminal might be The Option 
-
-# Frontend
-
-* Code currently organized in `frontend` folder in 3 files, might create new files to split logic later.
-* Frontend currently calls "dummy" functions, which allows to work on it, ignoring the rest of development (good)
-* Open on web by clicking on `index.html` in `File explorer`
+To stop **and remove** running containers, call `docker compose down` or `docker compose down -v`, if you prefer to remove created volume (database data) too. For a full cleanup call `docker compose down --volumes --rmi all`.

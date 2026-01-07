@@ -1,18 +1,13 @@
-# Base image
-FROM python:3.11-slim
+FROM node:lts-alpine
 
-# Set working directory
 WORKDIR /app
 
-# Copy requirements and install
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY ["package.json", "package-lock.json*", "./"]
+RUN npm install 
 
-# Copy backend code
 COPY . .
 
-# Expose port
 EXPOSE 8000
 
-# Run server
-CMD ["uvicorn", "run:app", "--host", "0.0.0.0", "--port", "8000"]
+# To keep it running, as now there is no server to run, just test scripts
+ENTRYPOINT ["tail", "-f", "/dev/null"]
