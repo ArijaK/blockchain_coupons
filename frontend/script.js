@@ -27,9 +27,42 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("mint_shortcut").onclick = function () { showView("mint_view", this); };
     document.getElementById("show_shortcut").onclick = function () { showView("show_view", this); };
     document.getElementById("profile_shortcut").onclick = function () { showView("profile_view", this); };
+
+    const input = document.getElementById("redeemer_input");
+    const list = document.getElementById("redeemer_list");
+    const addBtn = document.getElementById("add_redeemer_btn");
+
+    let values = [];
+
+    addBtn.addEventListener("click", addValue);
+
+    function addValue() {
+        const value = input.value.trim();
+        if (!value || values.includes(value)) return;
+
+        values.push(value);
+
+        const tag = document.createElement("div");
+        tag.className = "tag";
+        tag.textContent = value;
+
+        const remove = document.createElement("button");
+        remove.type = "button";
+        remove.textContent = "×";
+        remove.addEventListener("click", () => {
+            values = values.filter(v => v !== value);
+            tag.remove();
+        });
+
+        tag.appendChild(remove);
+        list.appendChild(tag);
+
+        input.value = "";
+        input.focus();
+    }
+
+    window.getRedeemers = () => values;
 });
-
-
 
 
 

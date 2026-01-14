@@ -22,21 +22,51 @@
     <div id="mint_view">
       <!--  -->
       <form action="">
-        <label for="coupon_name">Coupon name</label>
-        <input type="text" id="coupon_name" name="coupon_name" placeholder="November campaign 2025"><br>
-        <label for="usable_date">Usable through:</label>
-        <div class="unfinished">TODO calendar thing</div>
-        <label for="count">Count:</label>
-        <div class="unfinished">TODO scroll count thing</div>
-        <label for="unique">Unique:</label>
-        <div class="unfinished">TODO checkbox</div>
-        <div class="unfinished">i am also thinking that we need info on hover</div>
-        <label for="description">Description:</label>
-        <div class="unfinished">TODO description text box</div>
-        <label for="redeem_at">Redeem at:</label>
-        <div class="unfinished">TODO choose from list</div>
+        <div class="form_kid">
+          <label for="coupon_name">Coupon name</label>
+          <input type="text" id="coupon_name" name="coupon_name" placeholder="November campaign 2025"><br>
+        </div>
+        <div class="form_kid">
+          <label for="usable_date">Usable through:</label>
+          <div id="both_calendars">
+            <div id="date_text_format">
+              <label for="from_date_calendar">From:</label>
+              <label for="to_date_calendar">To:</label>
+            </div>
+            <div id="date_calendar_format">
+              <input type="date" id="from_date_calendar" name="from_date">
+              <input type="date" id="to_date_calendar" name="to_date">
+            </div>
+          </div>
+        </div>
+        <div class="form_kid">
+          <label for="count_text">Count:</label>
+          <input type="number" id="count_input" placeholder="1">
+        </div>
+
+
+
+
+        <div class="form_kid">
+          <label for="unique">Unique (non-fungible):</label>
+          <input type="checkbox">
+        </div>
+        <div class="form_kid">
+          <label for="description">Description:</label>
+          <input type="text" id="text_description">
+        </div>
+        <div class="form_kid">
+          <label for="redeem_at">Redeem at:</label>
+          <div class="multi-input">
+            <div id="redeemer_list"></div>
+            <input type="search" id="redeemer_input" placeholder="Retailer account ID number" />
+            <button type="button" id="add_redeemer_btn">Add</button>
+
+          </div>
+        </div>
         <div class="unfinished">TODO if self in list = auto approve, if anyone else in list: wait for approve</div>
         <div class="unfinished"> TODO need view where can approve requests from others to be redeemer</div>
+        <div class="unfinished"> TODO not a single check set for value boundries</div>
         <br><br>
         <input id="mint_done_button" type="submit" value="DONE">
       </form>
@@ -45,7 +75,7 @@
     <div id="show_view">Show view (add from drawio)</div>
 
     <div id="profile_view">Profile view</div>
-    
+
   </main>
   <script src="script.js"></script>
 </body>
