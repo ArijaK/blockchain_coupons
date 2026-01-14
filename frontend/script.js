@@ -23,10 +23,59 @@ function showView(viewId, button) {
     button.classList.add("active");
 }
 
+function show_coupons(container_id, issued_coupons) {
+    const container = document.getElementById(container_id);
+    if (!container) return;
+
+    container.innerHTML = ""; // clear existing
+
+    if (issued_coupons.length == 0) { // show "no coupons"
+        const div = document.createElement("div");
+        div.className = "not_any_issued_coupon_div";
+        div.textContent = "No coupons issued yet";
+        container.appendChild(div);
+    }
+    issued_coupons.forEach(coupon => { // show retrieved coupons
+        const div = document.createElement("div");
+        div.className = "display_coupon_div";
+
+        div.innerHTML = `
+      <strong>${coupon.name}</strong><br>
+      From: ${coupon.date_from} To: ${coupon.date_to}<br>
+      total_count: ${coupon.total_count}, redeemed_count: ${coupon.redeemed_count}, not_issued_count: ${coupon.not_issued_count}
+    `;
+        div.innerHTML += "==================TOTTALLY NEEDS FIXING, BUT IT IS LATE================";
+        container.appendChild(div);
+    });
+}
+
+
 document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("mint_shortcut").onclick = function () { showView("mint_view", this); };
     document.getElementById("show_shortcut").onclick = function () { showView("show_view", this); };
     document.getElementById("profile_shortcut").onclick = function () { showView("profile_view", this); };
+
+    ///////////////////////// TODO: replace with info from backend / blockchain  (because need to know usage) about coupons that this person has
+    const fake_data = [{
+        name: "fake_data_November Campaign 2025",
+        date_from: "2026-01-01",
+        date_to: "2026-01-15",
+        total_count: 100,
+        redeemed_count: 50,
+        not_issued_count: 40
+    },
+    {
+        name: "fake_data_December Promo",
+        date_from: "2026-01-20",
+        date_to: "2026-01-31",
+        total_count: 200,
+        redeemed_count: 100,
+        not_issued_count: 50
+    }];
+    // fake_data = []
+
+    show_coupons("show_view", fake_data);
+    /////////////////////////
 
     const input = document.getElementById("redeemer_input");
     const list = document.getElementById("redeemer_list");

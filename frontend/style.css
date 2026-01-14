@@ -10,6 +10,8 @@ main {
     border-width: 2px;
     border-style: solid;
     border-radius: 8px;
+    min-height: 80vh;
+
 }
 
 /* Navigation tabs and buttons */
@@ -59,6 +61,7 @@ main {
     display: none;
 }
 
+/* show_view */
 #views>#mint_view {
     display: block;
 }
@@ -93,7 +96,6 @@ main {
 
 #date_text_format {
     margin-left: 40px;
-
     display: flex;
     gap: 120px;
 }
@@ -102,10 +104,6 @@ main {
 
     display: flex;
     gap: 40px;
-}
-
-.form_kid {
-    margin-bottom: 15px;
 }
 
 #count_input {
@@ -120,11 +118,9 @@ main {
     height: 140px;
 }
 
-#redeemer_search {
-    width: 200px;
-}
 
 .form_kid {
+    margin-bottom: 15px;
     display: flex;
     align-items: center;
     gap: 12px;
@@ -167,20 +163,17 @@ main {
     background: #e0e0e0;
 }
 
-
-.tag {
-    background: #e0e0e0;
-    padding: 4px 8px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 14px;
+.not_any_issued_coupon_div {
+    margin: 20px 0px 0px 20px;
+    color: rgb(120, 120, 120);
+    font-size: 20px;
 }
 
-.tag button {
-    border: none;
-    background: none;
-    cursor: pointer;
-    font-weight: bold;
+.display_coupon_div {
+    border-color: rgb(155, 155, 155);
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 15px;
+    height: 80px;
+    margin-bottom: 20px;
 }
