@@ -36,16 +36,49 @@ function show_coupons(container_id, issued_coupons) {
         container.appendChild(div);
     }
     issued_coupons.forEach(coupon => { // show retrieved coupons
-        const div = document.createElement("div");
-        div.className = "display_coupon_div";
+        // whole wrapper        
+        const wrapper = document.createElement("div");
+        wrapper.className = "display_coupon_div";
 
-        div.innerHTML = `
-      <strong>${coupon.name}</strong><br>
-      From: ${coupon.date_from} To: ${coupon.date_to}<br>
-      total_count: ${coupon.total_count}, redeemed_count: ${coupon.redeemed_count}, not_issued_count: ${coupon.not_issued_count}
-    `;
-        div.innerHTML += "==================TOTTALLY NEEDS FIXING, BUT IT IS LATE================";
-        container.appendChild(div);
+        // left 1st line
+        const first_line = document.createElement("div");
+        first_line.className = "line_in_wrapper";
+
+        const name = document.createElement("span");
+        name.innerHTML = `<b>Name:</b> ${coupon.name}`;
+        const date = document.createElement("span");
+        date.innerHTML = `<b>Date:</b> ${coupon.date_from}  -  ${coupon.date_to}`;
+
+        // left 2nd line
+        const second_line = document.createElement("div");
+        second_line.className = "line_in_wrapper";
+        second_line.className = "line_in_wrapper counts";
+
+        const count = document.createElement("span");
+        count.innerHTML = `<b>Total count:</b> ${coupon.total_count}`;
+        const redeemed = document.createElement("span");
+        redeemed.innerHTML = `<b>Redeemed count:</b> ${coupon.redeemed_count}`;
+        const not_issued = document.createElement("span");
+        not_issued.innerHTML = `<b>Not issued count:</b> ${coupon.not_issued_count}`;
+        const expand_view = document.createElement("button");
+        expand_view.className = "button";
+        expand_view.appendChild(document.createTextNode("See more")); // TODO: this button does nothing, but should open view
+
+        // append left
+        first_line.appendChild(name);
+        first_line.appendChild(date);
+
+        // append right
+        second_line.appendChild(count);
+        second_line.appendChild(redeemed);
+        second_line.appendChild(not_issued);
+        second_line.appendChild(expand_view);
+
+        // append all
+        wrapper.appendChild(first_line);
+        wrapper.appendChild(second_line);
+
+        container.appendChild(wrapper);
     });
 }
 
@@ -68,7 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
         name: "fake_data_December Promo",
         date_from: "2026-01-20",
         date_to: "2026-01-31",
-        total_count: 200,
+        total_count: 20000,
         redeemed_count: 100,
         not_issued_count: 50
     }];

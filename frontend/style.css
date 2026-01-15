@@ -34,7 +34,8 @@ main {
     margin-left: 20px;
 }
 
-#navigation button {
+#navigation button,
+.button {
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
@@ -45,12 +46,14 @@ main {
     border-color: rgb(200, 200, 200)
 }
 
-#navigation button:hover {
+#navigation button:hover,
+.button:hover {
     background: rgba(50, 170, 255);
     color: white;
 }
 
-#navigation button.active {
+#navigation button.active,
+.button:active {
     background: rgba(30, 144, 255);
     color: white;
 }
@@ -61,7 +64,7 @@ main {
     display: none;
 }
 
-/* show_view */
+/* show_view / mint_view*/
 #views>#mint_view {
     display: block;
 }
@@ -169,11 +172,37 @@ main {
     font-size: 20px;
 }
 
+
 .display_coupon_div {
     border-color: rgb(155, 155, 155);
     border-width: 2px;
     border-style: solid;
     border-radius: 15px;
-    height: 80px;
+    min-height: 80px;
     margin-bottom: 20px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.line_in_wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+
+}
+
+.line_in_wrapper>span {
+    flex: 1;
+}
+
+.line_in_wrapper.counts>span {
+    flex: 1;
+}
+
+.button {
+    margin-left: auto;
+    margin-right: 12px;
+    margin-bottom: 6px;
 }
