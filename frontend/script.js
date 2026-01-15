@@ -23,6 +23,56 @@ function showView(viewId, button) {
     button.classList.add("active");
 }
 
+function add_redeemers() {
+    const input = document.getElementById("redeemer_input");
+    const list = document.getElementById("redeemer_list");
+    const addBtn = document.getElementById("add_redeemer_btn");
+
+    let values = [];
+
+    addBtn.addEventListener("click", addValue);
+
+    function addValue() {
+        const value = input.value.trim();
+        if (!value || values.includes(value)) return;
+
+        values.push(value);
+
+        const tag = document.createElement("div");
+        tag.className = "tag";
+        tag.textContent = value;
+
+        const remove = document.createElement("button");
+        remove.type = "button";
+        remove.textContent = "×";
+        remove.addEventListener("click", () => {
+            values = values.filter(v => v !== value);
+            tag.remove();
+        });
+
+        tag.appendChild(remove);
+        list.appendChild(tag);
+
+        input.value = "";
+        input.focus();
+    }
+
+    window.getRedeemers = () => values;
+}
+
+
+function add_profile_data(profile_data) {
+
+
+    const rows = document.querySelectorAll("#profile_view > div");
+
+    rows[0].children[1].textContent = profile_data.name;
+    rows[1].children[1].textContent = profile_data.retailerId;
+    rows[2].children[1].textContent = profile_data.email;
+    rows[3].children[1].textContent = profile_data.address;
+
+}
+
 function show_coupons(container_id, issued_coupons) {
     const container = document.getElementById(container_id);
     if (!container) return;
@@ -105,45 +155,19 @@ document.addEventListener("DOMContentLoaded", () => {
         redeemed_count: 100,
         not_issued_count: 50
     }];
-    // fake_data = []
+
+    const fake_profile_data = {
+        name: "John Doe",
+        retailerId: "R-12345",
+        email: "john@example.com",
+        address: "Main Street 1"
+    };
 
     show_coupons("show_view", fake_data);
-    /////////////////////////
+    add_redeemers() // mint view
 
-    const input = document.getElementById("redeemer_input");
-    const list = document.getElementById("redeemer_list");
-    const addBtn = document.getElementById("add_redeemer_btn");
+    add_profile_data(fake_profile_data);
 
-    let values = [];
-
-    addBtn.addEventListener("click", addValue);
-
-    function addValue() {
-        const value = input.value.trim();
-        if (!value || values.includes(value)) return;
-
-        values.push(value);
-
-        const tag = document.createElement("div");
-        tag.className = "tag";
-        tag.textContent = value;
-
-        const remove = document.createElement("button");
-        remove.type = "button";
-        remove.textContent = "×";
-        remove.addEventListener("click", () => {
-            values = values.filter(v => v !== value);
-            tag.remove();
-        });
-
-        tag.appendChild(remove);
-        list.appendChild(tag);
-
-        input.value = "";
-        input.focus();
-    }
-
-    window.getRedeemers = () => values;
 });
 
 
