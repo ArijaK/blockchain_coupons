@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import { ethers } from "ethers";
-import { Coupons__factory } from "../types/Coupons__factory.ts";
+import { Coupons__factory } from "../types/ethers-contracts/factories/Coupons__factory.ts";
 
 dotenv.config();
 
@@ -18,6 +18,11 @@ async function main() {
   console.log("Mint transaction hash:", transaction.hash);
 
   const receipt = await transaction.wait();
+  
+  if (!receipt) { 
+    throw new Error("Transaction was dropped or not mined"); 
+  }
+
   console.log("Mint confirmed in block:", receipt.blockNumber);
   console.log("Mint status:", receipt.status);
 

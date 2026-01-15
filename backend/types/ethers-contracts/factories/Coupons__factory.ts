@@ -4,8 +4,8 @@
 import type { Addressable } from "ethers";
 import { Contract, ContractFactory, ContractTransactionResponse, Interface } from "ethers"
 import type { Signer, ContractDeployTransaction, ContractRunner } from "ethers"
-import type { NonPayableOverrides } from "../common.js"
-  import type { Coupons, CouponsInterface } from "../Coupons.js";
+import type { NonPayableOverrides } from "../common.ts"
+  import type { Coupons, CouponsInterface } from "../Coupons.ts";
 
   const _abi = [
   {
