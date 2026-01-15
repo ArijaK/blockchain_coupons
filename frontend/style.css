@@ -1,7 +1,5 @@
 body {
     font-family: Arial, sans-serif;
-    /* text-align: center; */
-
 }
 
 main {
@@ -20,9 +18,6 @@ main {
     justify-content: space-between;
     align-items: center;
     padding: 5px 10px 5px 10px;
-    /* border-color: blue;
-    border-width: 2px; */
-    /* border-style: dashed; */
 }
 
 .left-buttons {
@@ -194,6 +189,8 @@ main {
 }
 
 .line_in_wrapper>span {
+    margin-top: 6px;
+    margin-left: 6px;
     flex: 1;
 }
 
@@ -204,5 +201,5 @@ main {
 .button {
     margin-left: auto;
     margin-right: 12px;
-    margin-bottom: 6px;
+    margin-bottom: 3px;
 }
