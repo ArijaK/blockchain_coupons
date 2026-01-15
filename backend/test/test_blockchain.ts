@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import { ethers } from "ethers";
-import couponJSON from "../abis/Coupons.json" with { type: "json" };
+import { Coupons__factory } from "../types/Coupons__factory.ts";
 
 dotenv.config();
 
@@ -8,9 +8,8 @@ async function main() {
   const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
   const signer = new ethers.Wallet(process.env.PRIVATE_KEY!, provider);
 
-  const coupons = new ethers.Contract(
+  const coupons = Coupons__factory.connect(
     process.env.COUPON_ADDRESS!,
-    couponJSON.abi,
     signer
   );
 
