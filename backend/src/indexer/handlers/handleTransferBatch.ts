@@ -1,5 +1,5 @@
 import { handleTransferSingle } from "./handleTransferSingle.js";
-import { type TransferBatchEvent } from "./types.js";
+import { type TransferBatchEvent } from "../types.js";
 
 export async function handleTransferBatch(event: TransferBatchEvent) {
   const { operator, from, to, ids, values } = event;

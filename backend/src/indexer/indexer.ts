@@ -19,16 +19,16 @@ export function startIndexer() {
   );
 
   coupons.on(
-    coupons.filters.TransferBatch(), handleTransferBatch
-    // async (operator, from, to, ids, values, event) => {
-    //   await handleTransferBatch({
-    //     operator,
-    //     from,
-    //     to,
-    //     ids,
-    //     values
-    //   });
-    // }
+    coupons.filters.TransferBatch(),
+    async (operator, from, to, ids, values, event) => {
+      await handleTransferBatch({
+        operator,
+        from,
+        to,
+        ids,
+        values
+      });
+    }
   );
 
   // Operator approvals
