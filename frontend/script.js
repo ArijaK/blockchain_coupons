@@ -171,6 +171,38 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
+const form = document.querySelector('form');
+
+form.addEventListener('submit', async (event) => {
+    event.preventDefault(); // stop the page from reloading
+
+    // Gather the form data
+    const couponData = {
+        name: document.getElementById('coupon_name').value,
+        fromDate: document.getElementById('from_date_calendar').value,
+        toDate: document.getElementById('to_date_calendar').value,
+        count: parseInt(document.getElementById('count_input').value, 10),
+        unique: document.querySelector('input[type="checkbox"]').checked,
+        description: document.getElementById('text_description').value,
+        redeemers: Array.from(document.querySelectorAll('#redeemer_list div')).map(el => el.textContent)
+    };
+
+    console.log("dump", couponData);
+
+    try {
+        const res = await fetch('http://localhost:8000/createCoupon', { // backend endpoint
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(couponData)
+        });
+
+        const result = await res.json();
+        console.log('Server response:', result);
+
+    } catch (err) {
+        console.error('Error sending data:', err);
+    }
+});
 
 
 

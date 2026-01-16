@@ -14,3 +14,12 @@ server.listen({ port: 8000, host: '0.0.0.0' }, (err, address) => {
   }
   console.log(`Server listening at ${address}`)
 })
+
+// frontend
+server.post('/createCoupon', async (request, reply) => {
+  const coupon = request.body; // JSON from frontend
+  console.log('Received coupon:', coupon);
+
+  // TODO: save coupon, validate, etc.
+  return { status: 'success', coupon };
+});
