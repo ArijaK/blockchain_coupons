@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
-import {Client} from "pg";
-import {ethers} from "ethers";
+import { Client } from "pg";
+import { ethers } from "ethers";
 
 // Load configuration from .env file
 dotenv.config();
