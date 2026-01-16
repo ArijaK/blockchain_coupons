@@ -1,0 +1,13 @@
+// Functionality that calls database
+
+import { couponsQueries } from "./queries.js";
+
+export const couponsService = {
+  getCouponByID(id: bigint) {
+    return couponsQueries.findByID(id);
+  },
+
+  getCouponsByOwner(address: string) {
+    return couponsQueries.findByOwner(address);
+  }
+};
