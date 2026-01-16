@@ -1,4 +1,5 @@
 import fastify from 'fastify'
+import fastifyCors from '@fastify/cors'
 
 const server = fastify()
 
@@ -13,6 +14,11 @@ server.listen({ port: 8000, host: '0.0.0.0' }, (err, address) => {
     process.exit(1)
   }
   console.log(`Server listening at ${address}`)
+})
+
+server.register(fastifyCors, {
+  origin: true,   // IMPORTANT: allows null origin (file://)
+  methods: ['GET', 'POST', 'OPTIONS']
 })
 
 // frontend
