@@ -1,5 +1,5 @@
-import { db } from "../services/database.js";
-import { type TransferSingleEvent } from "./types.js";
+import { db } from "../../services/database.js";
+import { type TransferSingleEvent } from "../types.js";
 import { ZeroAddress } from "ethers";
 
 export async function handleTransferSingle(event: TransferSingleEvent) {

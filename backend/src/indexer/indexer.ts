@@ -1,6 +1,6 @@
 import { coupons } from "../services/blockchain.js";
-import { handleTransferSingle } from "./handleTransferSingle.js";
-import { handleTransferBatch } from "./handleTransferBatch.js";
+import { handleTransferSingle } from "./handlers/handleTransferSingle.js";
+import { handleTransferBatch } from "./handlers/handleTransferBatch.js";
 
 export function startIndexer() {
 
