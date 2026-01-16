@@ -7,7 +7,7 @@ dotenv.config();
 const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
 const signer = new ethers.Wallet(process.env.PRIVATE_KEY!, provider);
 
-const coupons = Coupons__factory.connect(
+export const coupons = Coupons__factory.connect(
   process.env.COUPON_ADDRESS!,
   signer
 );
