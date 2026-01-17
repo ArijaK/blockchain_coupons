@@ -329,6 +329,13 @@ async function fetchUserCoupons(userAddress) {
     return data;
 }
 
+async function fetchOwnedCoupons(address) {
+    const res = await fetch(`http://localhost:8000/coupons/user/${address}`);
+    if (!res.ok) return [];
+    return await res.json();
+}
+
+
 //////////////////////////////////////////////////////////////////////
 // const logDiv = document.getElementById("log");
 
