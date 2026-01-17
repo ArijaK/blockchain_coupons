@@ -12,6 +12,7 @@ export async function couponsRoutes(fastify: FastifyInstance) {
 export async function blockchainRoutes(fastify: FastifyInstance) {
   fastify.post("/mint", blockchainController.mintCoupon);
   fastify.post("/redeem", blockchainController.redeemCoupon);
-  fastify.post("/transfer", blockchainController.transferCoupon);
+  fastify.post("/user-transfer", blockchainController.transferCoupon);
   fastify.post("/issuer-add", blockchainController.addIssuer);
+  fastify.post("/transfer", blockchainController.backendTransfer);
 }

@@ -6,21 +6,20 @@ import type { TypedContractEvent, TypedDeferredTopicFilter, TypedEventLog, Typed
   
 
   export interface CouponsInterface extends Interface {
-    getFunction(nameOrSignature: "addIssuer" | "addRedeemers" | "balanceOf" | "balanceOfBatch" | "couponIDCounter" | "isAllowedRedeemer" | "isApprovedForAll" | "isIssuer" | "mint" | "owner" | "redeem" | "renounceOwnership" | "safeBatchTransferFrom" | "safeTransferFrom" | "setApprovalForAll" | "supportsInterface" | "transferOwnership" | "uri"): FunctionFragment;
+    getFunction(nameOrSignature: "addIssuer" | "backendTransfer" | "balanceOf" | "balanceOfBatch" | "couponIDCounter" | "isApprovedForAll" | "isIssuer" | "mint" | "owner" | "redeem" | "renounceOwnership" | "safeBatchTransferFrom" | "safeTransferFrom" | "setApprovalForAll" | "supportsInterface" | "transferOwnership" | "uri"): FunctionFragment;
 
     getEvent(nameOrSignatureOrTopic: "ApprovalForAll" | "OwnershipTransferred" | "TransferBatch" | "TransferSingle" | "URI"): EventFragment;
 
     encodeFunctionData(functionFragment: 'addIssuer', values: [AddressLike]): string;
-encodeFunctionData(functionFragment: 'addRedeemers', values: [AddressLike[]]): string;
+encodeFunctionData(functionFragment: 'backendTransfer', values: [AddressLike, AddressLike, BigNumberish, BigNumberish]): string;
 encodeFunctionData(functionFragment: 'balanceOf', values: [AddressLike, BigNumberish]): string;
 encodeFunctionData(functionFragment: 'balanceOfBatch', values: [AddressLike[], BigNumberish[]]): string;
 encodeFunctionData(functionFragment: 'couponIDCounter', values?: undefined): string;
-encodeFunctionData(functionFragment: 'isAllowedRedeemer', values: [AddressLike]): string;
 encodeFunctionData(functionFragment: 'isApprovedForAll', values: [AddressLike, AddressLike]): string;
 encodeFunctionData(functionFragment: 'isIssuer', values: [AddressLike]): string;
 encodeFunctionData(functionFragment: 'mint', values: [AddressLike, BigNumberish]): string;
 encodeFunctionData(functionFragment: 'owner', values?: undefined): string;
-encodeFunctionData(functionFragment: 'redeem', values: [BigNumberish]): string;
+encodeFunctionData(functionFragment: 'redeem', values: [AddressLike, BigNumberish]): string;
 encodeFunctionData(functionFragment: 'renounceOwnership', values?: undefined): string;
 encodeFunctionData(functionFragment: 'safeBatchTransferFrom', values: [AddressLike, AddressLike, BigNumberish[], BigNumberish[], BytesLike]): string;
 encodeFunctionData(functionFragment: 'safeTransferFrom', values: [AddressLike, AddressLike, BigNumberish, BigNumberish, BytesLike]): string;
@@ -30,11 +29,10 @@ encodeFunctionData(functionFragment: 'transferOwnership', values: [AddressLike])
 encodeFunctionData(functionFragment: 'uri', values: [BigNumberish]): string;
 
     decodeFunctionResult(functionFragment: 'addIssuer', data: BytesLike): Result;
-decodeFunctionResult(functionFragment: 'addRedeemers', data: BytesLike): Result;
+decodeFunctionResult(functionFragment: 'backendTransfer', data: BytesLike): Result;
 decodeFunctionResult(functionFragment: 'balanceOf', data: BytesLike): Result;
 decodeFunctionResult(functionFragment: 'balanceOfBatch', data: BytesLike): Result;
 decodeFunctionResult(functionFragment: 'couponIDCounter', data: BytesLike): Result;
-decodeFunctionResult(functionFragment: 'isAllowedRedeemer', data: BytesLike): Result;
 decodeFunctionResult(functionFragment: 'isApprovedForAll', data: BytesLike): Result;
 decodeFunctionResult(functionFragment: 'isIssuer', data: BytesLike): Result;
 decodeFunctionResult(functionFragment: 'mint', data: BytesLike): Result;
@@ -152,8 +150,8 @@ decodeFunctionResult(functionFragment: 'uri', data: BytesLike): Result;
     
 
     
-    addRedeemers: TypedContractMethod<
-      [redeemers: AddressLike[], ],
+    backendTransfer: TypedContractMethod<
+      [from: AddressLike, to: AddressLike, couponID: BigNumberish, amount: BigNumberish, ],
       [void],
       'nonpayable'
     >
@@ -179,14 +177,6 @@ decodeFunctionResult(functionFragment: 'uri', data: BytesLike): Result;
     couponIDCounter: TypedContractMethod<
       [],
       [bigint],
-      'view'
-    >
-    
-
-    
-    isAllowedRedeemer: TypedContractMethod<
-      [arg0: AddressLike, ],
-      [boolean],
       'view'
     >
     
@@ -225,7 +215,7 @@ decodeFunctionResult(functionFragment: 'uri', data: BytesLike): Result;
 
     
     redeem: TypedContractMethod<
-      [couponID: BigNumberish, ],
+      [from: AddressLike, couponID: BigNumberish, ],
       [void],
       'nonpayable'
     >
@@ -295,8 +285,8 @@ decodeFunctionResult(functionFragment: 'uri', data: BytesLike): Result;
       [void],
       'nonpayable'
     >;
-getFunction(nameOrSignature: 'addRedeemers'): TypedContractMethod<
-      [redeemers: AddressLike[], ],
+getFunction(nameOrSignature: 'backendTransfer'): TypedContractMethod<
+      [from: AddressLike, to: AddressLike, couponID: BigNumberish, amount: BigNumberish, ],
       [void],
       'nonpayable'
     >;
@@ -313,11 +303,6 @@ getFunction(nameOrSignature: 'balanceOfBatch'): TypedContractMethod<
 getFunction(nameOrSignature: 'couponIDCounter'): TypedContractMethod<
       [],
       [bigint],
-      'view'
-    >;
-getFunction(nameOrSignature: 'isAllowedRedeemer'): TypedContractMethod<
-      [arg0: AddressLike, ],
-      [boolean],
       'view'
     >;
 getFunction(nameOrSignature: 'isApprovedForAll'): TypedContractMethod<
@@ -341,7 +326,7 @@ getFunction(nameOrSignature: 'owner'): TypedContractMethod<
       'view'
     >;
 getFunction(nameOrSignature: 'redeem'): TypedContractMethod<
-      [couponID: BigNumberish, ],
+      [from: AddressLike, couponID: BigNumberish, ],
       [void],
       'nonpayable'
     >;

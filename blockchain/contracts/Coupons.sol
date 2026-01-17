@@ -10,8 +10,7 @@ contract Coupons is ERC1155, Ownable(msg.sender) {
   // NOTE: Let's hope we wont have more than (1x10^77) coupon types created
   uint256 public couponIDCounter;
 
-  // issuer and redeemer lists - for faster look up
-  mapping(address => bool) public isAllowedRedeemer;
+  // issuer list for faster look up
   mapping(address => bool) public isIssuer;
 
   // In "https://" we can write where metadata come from (URI)
@@ -23,13 +22,6 @@ contract Coupons is ERC1155, Ownable(msg.sender) {
   // Grant issuer rights (only owner can assign)
   function addIssuer(address account) external onlyOwner {
     isIssuer[account] = true;
-  }
-
-  // Create redeemers list
-  function addRedeemers(address[] memory redeemers) public {
-    for (uint256 i = 0; i < redeemers.length; i++) {
-      isAllowedRedeemer[redeemers[i]] = true;
-    }
   }
 
   // Issuers can create (mint) new coupons
@@ -57,20 +49,15 @@ contract Coupons is ERC1155, Ownable(msg.sender) {
   // NOTE: We can add burning when expiry date is reached
 
   // Redemption (burning)
-  function redeem(uint256 couponID) external {
+  function redeem(address from, uint256 couponID) external {
     // NOTE: Removes from circulation, does not destroy ID
     // If there were 100 such coupons and 1 was burned,
     // only 99 will remain in circulation (1 will be unusable anymore)
     // If there was 1 such coupon and 1 was burned,
     // no more will remain, but the ID will still exist
 
-    // only authorized redeemers can redeem
-    require(
-      isAllowedRedeemer[msg.sender],
-      "Not authorized to redeem coupon."
-    );
-    require(balanceOf(msg.sender, couponID) > 0, "No tokens to redeem");
+    require(balanceOf(from, couponID) > 0, "No tokens to redeem");
 
-    _burn(msg.sender, couponID, 1);
+    _burn(from, couponID, 1);
   }
 }

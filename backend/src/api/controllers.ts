@@ -36,9 +36,12 @@ export const blockchainController = {
   },
 
   async redeemCoupon(req: FastifyRequest, reply: FastifyReply) {
-    const { coupon_id } = req.body as { coupon_id: string };
+    const { from, coupon_id } = req.body as {
+      from: string;
+      coupon_id: string
+    };
 
-    const tx = await blockchainService.redeemCoupon(BigInt(coupon_id));
+    const tx = await blockchainService.redeemCoupon(from, BigInt(coupon_id));
     return reply.send({ txHash: tx?.hash });
   },
 
@@ -59,6 +62,17 @@ export const blockchainController = {
 
     const tx = await blockchainService.addIssuer(account);
     return reply.send({ txHash: tx?.hash });
-  }
+  },
 
+  async backendTransfer(req: FastifyRequest, reply: FastifyReply) {
+    const { from, to, id, amount } = req.body as {
+      from: string;
+      to: string;
+      id: string;
+      amount: bigint;
+    };
+
+    const tx = await blockchainService.transferBackend(from, to, BigInt(id), amount);
+    return reply.send({ txHash: tx?.hash });
+  }
 }
