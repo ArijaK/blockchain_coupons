@@ -1,11 +1,6 @@
-// TODO:
-// 1) Šis ļauj taisīt frontend (urā)
-// 2) Vēlāk, lai nebūtu "Dummy function", jāizdomā, vai mums ir
-//      JS -> Solidity
-//      JS -> Python (api server small) -> Solidity
-///////////////////////////////////////////////////////////////////////
 
-
+const ISSUER_USER_ADDRESS = "0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc"; // Second from 002_seed.sql. I am Bob.
+const USER_ADDRESS = "0x90f79bf6eb2c4f870365e785982e1f101e93b906" // third from 002_seed.sql. I am Alice.
 // Show only one of views simultaneously
 function showView(viewId, button) {
     // hide all views
@@ -178,7 +173,16 @@ function show_client_coupons(container_id, issued_coupons) {
 
 document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("mint_shortcut").onclick = function () { showView("mint_view", this); };
-    document.getElementById("show_shortcut").onclick = function () { showView("show_view", this); };
+    // document.getElementById("show_shortcut").onclick = function () { showView("show_view", this); };
+    document.getElementById("show_shortcut").onclick = function () {
+        showView("show_view", this);
+
+        fetchCreatedCoupons(ISSUER_USER_ADDRESS).then(coupons => {
+            show_coupons("show_view", coupons);
+        });
+    };
+
+
     document.getElementById("profile_shortcut").onclick = function () { showView("profile_view", this); };
 
     ///////////////////////// TODO: replace with info from backend / blockchain  (because need to know usage) about coupons that this person has
@@ -231,11 +235,14 @@ document.addEventListener("DOMContentLoaded", () => {
     ];
 
 
-    show_coupons("show_view", fake_data);
+    // show_coupons("show_view", fake_data); # replaced by  document.getElementById("show_shortcut").onclick = function ()
     add_redeemers() // mint view
 
     add_profile_data(fake_profile_data);
-    show_client_coupons("show_client_view", fake_coupons_client);
+    // show_client_coupons("show_client_view", fake_coupons_client);
+    fetchOwnedCoupons(USER_ADDRESS).then(coupons => { // NOTE: does only once, might need to have refresh logic in client page
+        show_client_coupons("show_client_view", coupons);
+    });
 
 
 });
@@ -243,38 +250,84 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const form = document.querySelector('form');
 
-form.addEventListener('submit', async (event) => {
-    event.preventDefault(); // stop the page from reloading
+// form.addEventListener('submit', async (event) => {
+//     event.preventDefault(); // stop the page from reloading
 
-    // Gather the form data
+//     // Gather the form data
+//     const couponData = {
+//         name: document.getElementById('coupon_name').value,
+//         fromDate: document.getElementById('from_date_calendar').value,
+//         toDate: document.getElementById('to_date_calendar').value,
+//         count: parseInt(document.getElementById('count_input').value, 10),
+//         unique: document.querySelector('input[type="checkbox"]').checked,
+//         description: document.getElementById('text_description').value,
+//         redeemers: Array.from(document.querySelectorAll('#redeemer_list div')).map(el => el.textContent)
+//     };
+
+//     console.log("dump", couponData);
+
+//     try {
+//         const res = await fetch('http://localhost:8000/createCoupon', { // backend endpoint
+//             method: 'POST',
+//             headers: { 'Content-Type': 'application/json' },
+//             body: JSON.stringify(couponData)
+//         });
+
+//         const result = await res.json();
+//         console.log('Server response:', result);
+
+//     } catch (err) {
+//         console.error('Error sending data:', err);
+//     }
+// });
+form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
     const couponData = {
-        name: document.getElementById('coupon_name').value,
-        fromDate: document.getElementById('from_date_calendar').value,
-        toDate: document.getElementById('to_date_calendar').value,
-        count: parseInt(document.getElementById('count_input').value, 10),
-        unique: document.querySelector('input[type="checkbox"]').checked,
-        description: document.getElementById('text_description').value,
-        redeemers: Array.from(document.querySelectorAll('#redeemer_list div')).map(el => el.textContent)
+        to: ISSUER_USER_ADDRESS,
+        amount: parseInt(document.getElementById('count_input').value, 10)
     };
 
-    console.log("dump", couponData);
-
     try {
-        const res = await fetch('http://localhost:8000/createCoupon', { // backend endpoint
+        const res = await fetch('http://localhost:8000/blockchain/mint', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(couponData)
         });
 
         const result = await res.json();
-        console.log('Server response:', result);
+        console.log('Mint response:', result);
 
     } catch (err) {
         console.error('Error sending data:', err);
     }
 });
 
+async function fetchCreatedCoupons(userAddress) {
+    const base = "http://localhost:8000";
+    try {
+        const res = await fetch(`${base}/coupons/user/created/${userAddress}`);
+        if (!res.ok) {
+            console.error("Failed to fetch coupons", res.status);
+            return [];
+        }
+        const data = await res.json();
+        return data;
+    } catch (err) {
+        console.error("Error fetching coupons:", err);
+        return [];
+    }
+}
 
+async function fetchUserCoupons(userAddress) {
+    const base = "http://localhost:8000";
+    const res = await fetch(`${base}/coupons/user/${userAddress}`);
+
+    if (!res.ok) return [];
+
+    const data = await res.json();
+    return data;
+}
 
 //////////////////////////////////////////////////////////////////////
 // const logDiv = document.getElementById("log");
