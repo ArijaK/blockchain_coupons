@@ -11,7 +11,7 @@ export async function handleTransferSingle(event: TransferSingleEvent) {
     // TODO: Handle additional data (name) somewhere???
     await db.query(
       `INSERT INTO coupon_types (token_id, coupon_name, amount, issuer_id)
-        VALUES ($1, "THIS MUST BE TODO", $2, $3)`,
+        VALUES ($1, 'TODO NAME', $2, $3);`,
       [id.toString(), 1, to]
     );
     for (let i = 0; i < amount; i++) {
@@ -31,7 +31,7 @@ export async function handleTransferSingle(event: TransferSingleEvent) {
       `UPDATE coupons
        SET status = 3
        WHERE owner_id = $1 AND type_id = $2 AND status = 1
-       LIMIT $3`,
+       LIMIT $3;`,
       [from, id.toString(), amount]
     );
     return;
@@ -42,7 +42,7 @@ export async function handleTransferSingle(event: TransferSingleEvent) {
     `UPDATE coupons
      SET owner = $1
      WHERE owner = $2 AND token_id = $3 AND status = 1
-     LIMIT $4`,
+     LIMIT $4;`,
     [to, from, id.toString(), amount]
   );
 }
