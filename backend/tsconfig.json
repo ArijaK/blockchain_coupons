@@ -44,5 +44,5 @@
     "esModuleInterop": true,
     "resolveJsonModule": true
   },
-  "exclude": ["./src/test", "./src/types/ether-contracts"]
+  "exclude": ["./src/test"]
 }

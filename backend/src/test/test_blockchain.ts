@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import { ethers } from "ethers";
-import { Coupons__factory } from "../types/ethers-contracts/factories/Coupons__factory.js";
+import { Coupons__factory } from "../types/ethers-contracts/factories/Coupons__factory.ts";
 
 dotenv.config();
 
