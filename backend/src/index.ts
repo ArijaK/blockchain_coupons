@@ -1,8 +1,10 @@
 import fastify from 'fastify'
 import fastifyCors from '@fastify/cors'
+import couponsRoutes from './api/routes.js'
 
 const server = fastify()
 
+// Simple test that backend server is reachable
 server.get('/ping', async (request, reply) => {
   return 'pong\n'
 })
@@ -20,7 +22,10 @@ server.register(fastifyCors, {
   methods: ['GET', 'POST', 'OPTIONS']
 })
 
-// frontend
+// NOTE: This should be how we structure frontend calls now
+server.register(couponsRoutes, { prefix: "/coupons"});
+
+// OLD frontend
 server.post('/createCoupon', async (request, reply) => {
   const coupon = request.body; // JSON from frontend
   console.log('Received coupon:', coupon);
