@@ -84,11 +84,11 @@ async function main() {
   const coupon = await send_request("GET", `${base}/coupons/0`);
   console.log("Coupon: ", coupon);
 
-  console.log("\nRedeeming a coupon (ID=0)");
+  console.log("\nRedeeming a coupon (ID=1)");
   const redemption = await send_request(
     "POST", `${base}/blockchain/redeem`,
     {
-      coupon_id: 0,
+      coupon_id: 1,
       from: "0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc"
     }
   );
