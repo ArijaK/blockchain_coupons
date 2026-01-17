@@ -6,9 +6,14 @@ export async function handleTransferSingle(event: TransferSingleEvent) {
   const { operator, from, to, id, value } = event;
 
   const amount = Number(value);
-
   // Mint - coupon status: "active"
   if (from === ZeroAddress) {
+    // TODO: Handle additional data (name) somewhere???
+    await db.query(
+      `INSERT INTO coupon_types (token_id, coupon_name, amount, issuer_id)
+        VALUES ($1, "THIS MUST BE TODO", $2, $3)`,
+      [id.toString(), 1, to]
+    );
     for (let i = 0; i < amount; i++) {
       await db.query(
         `INSERT INTO coupons (type_id, status, owner_id)

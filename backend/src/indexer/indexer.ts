@@ -7,7 +7,6 @@ export function startIndexer() {
   coupons.on(
     coupons.filters.TransferSingle(), 
     async (operator, from, to, id, value, event) => {
-      console.log("TransferSingle", { from, to, id: id.toString(), value: value.toString() });
       await handleTransferSingle({
         operator,
         from,
