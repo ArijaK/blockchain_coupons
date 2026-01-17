@@ -3,14 +3,25 @@
 import { coupons } from "../services/blockchain.js";
 
 export const blockchainService = {
-  mintCoupons(to: string, amount: bigint) {
-    return coupons.mint(to, amount);
+  async mintCoupons(to: string, amount: bigint) {
+    const tx = await coupons.mint(to, amount);
+    return tx.wait(); // Confirmation
   },
 
   /// TODO: Must update with redemption logic
-  redeemCoupon(coupon_id: bigint) {
-    return coupons.redeem(coupon_id);
-  }
+  async redeemCoupon(coupon_id: bigint) {
+    const tx = await coupons.redeem(coupon_id);
+    return tx.wait();
+  },
 
-  /// TODO: More logic?
+  async transferCoupons(from: string, to: string, id: bigint, amount: bigint) {
+    const tx = await coupons.safeTransferFrom(from, to, id, amount, "0x");
+    return tx.wait();
+  },
+
+  async addIssuer(account: string) {
+    const tx = await coupons.addIssuer(account);
+    return tx.wait();
+  }
+  /// TODO: Just realised we cannot simply burn things without redeeming them.
 };
