@@ -17,7 +17,7 @@ export async function handleTransferSingle(event: TransferSingleEvent) {
     for (let i = 0; i < amount; i++) {
       await db.query(
         `INSERT INTO coupons (type_id, status, owner_id)
-         VALUES ($1, $2, $3)`,
+         VALUES ($1, $2, $3);`,
         [id.toString(), 1, to]
       );
     }
@@ -29,9 +29,16 @@ export async function handleTransferSingle(event: TransferSingleEvent) {
   if (to === ZeroAddress) {
     await db.query(
       `UPDATE coupons
-       SET status = 3
-       WHERE owner_id = $1 AND type_id = $2 AND status = 1
-       LIMIT $3;`,
+        SET status = 3
+        WHERE ctid IN (
+          SELECT ctid
+          FROM coupons
+          WHERE owner_id = $1
+            AND type_id = $2
+            AND status = 1
+          ORDER BY coupon_id
+          LIMIT $3
+        );`,
       [from, id.toString(), amount]
     );
     return;
@@ -40,9 +47,16 @@ export async function handleTransferSingle(event: TransferSingleEvent) {
   // Transfer
   await db.query(
     `UPDATE coupons
-     SET owner = $1
-     WHERE owner = $2 AND token_id = $3 AND status = 1
-     LIMIT $4;`,
+      SET owner_id = $1
+      WHERE ctid IN (
+        SELECT ctid
+        FROM coupons
+        WHERE owner_id = $2
+          AND type_id = $3
+          AND status = 1
+        ORDER BY coupon_id
+        LIMIT $4
+      );`,
     [to, from, id.toString(), amount]
   );
 }
