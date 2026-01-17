@@ -49,15 +49,10 @@ contract Coupons is ERC1155, Ownable(msg.sender) {
     _mint(to, couponID, amount, "");
   }
 
-  // Everyone can distribute coupons (without QR code option)
-  // NOTE: If you want to restrict distribution
-  // function distribute(
-  //     address from, address to,
-  //     uint256 couponID, uint256 amount
-  // ) external {
-  //     require(isIssuer[msg.sender], "Not authorized to distribute");
-  //     safeTransferFrom(from, to, couponID, amount, "");
-  // }
+  // NOTE: Let backend handle user token transfers
+  function backendTransfer(address from, address to, uint256 couponID, uint256 amount) external onlyOwner {
+      _safeTransferFrom(from, to, couponID, amount, "");
+  }
 
   // NOTE: We can add burning when expiry date is reached
 
