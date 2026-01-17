@@ -14,5 +14,11 @@ export const couponsController = {
     const { address } = req.params as { address: string };
     const coupons = await couponsService.getCouponsByOwner(address);
     return reply.send(coupons);
+  },
+
+  async getCouponsByIssuer(req: FastifyRequest, reply: FastifyReply) {
+    const { address } = req.params as { address: string };
+    const coupons = await couponsService.getCouponsByIssuer(address);
+    return reply.send(coupons);
   }
 }

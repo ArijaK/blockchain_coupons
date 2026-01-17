@@ -6,6 +6,7 @@ import { couponsController } from "./controllers.js";
 export default async function couponsRoutes(fastify: FastifyInstance) {
   fastify.get("/:id", couponsController.getCoupon);
   fastify.get("/user/:address", couponsController.getCouponsByOwner);
+  fastify.get("/user/created/:address", couponsController.getCouponsByIssuer);
 }
 
 // export default async function blockchainRoutes(fastify) {

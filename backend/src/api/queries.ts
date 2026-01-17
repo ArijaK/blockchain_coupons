@@ -1,7 +1,7 @@
 // Database queries
 import { db } from "../services/database.js";
 
-// Coupon instances
+// Coupon instances and types
 export const couponsQueries = {
   findByID(id: bigint) {
     return db.query(
@@ -13,6 +13,13 @@ export const couponsQueries = {
   findByOwner(address: string) {
     return db.query(
       "SELECT * FROM coupons WHERE owner_id = $1",
+      [address]
+    ).then(r => r.rows);
+  },
+
+  findByIssuer(address: string) {
+    return db.query(
+      "SELECT * FROM coupon_types WHERE issuer_id = $1",
       [address]
     ).then(r => r.rows);
   }

@@ -9,5 +9,9 @@ export const couponsService = {
 
   getCouponsByOwner(address: string) {
     return couponsQueries.findByOwner(address);
+  },
+
+  getCouponsByIssuer(address: string) {
+    return couponsQueries.findByIssuer(address);
   }
 };
