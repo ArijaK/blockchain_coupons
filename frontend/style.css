@@ -220,3 +220,39 @@ main {
 #profile_view>div span:last-child {
     flex: 1;
 }
+
+/* Client view */
+#demo_client {
+    background: transparent;
+    border: none;
+    color: transparent;
+    padding: 0;
+    margin: 0;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+}
+
+#demo_client:hover {
+    background: white !important;
+    color: white !important;
+}
+
+#demo_client,
+#demo_client:hover,
+#demo_client:active {
+    cursor: default !important;
+}
+
+#client_view .title {
+    font-size: 24px;
+    color: gray;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+
+.display_coupon_div {
+    padding-left: 8px;
+    padding-top: 4px;
+}

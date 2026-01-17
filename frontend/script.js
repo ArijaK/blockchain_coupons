@@ -15,6 +15,10 @@ function showView(viewId, button) {
     // show selected view
     document.getElementById(viewId).style.display = "block";
 
+    if (viewId == "client_view") {
+        document.getElementById("navigation").style.display = "none";
+    }
+
     // remove active class from all buttons
     const buttons = document.querySelectorAll("#navigation button");
     buttons.forEach(b => b.classList.remove("active"));
@@ -132,6 +136,45 @@ function show_coupons(container_id, issued_coupons) {
     });
 }
 
+function show_client_coupons(container_id, issued_coupons) {
+    const container = document.getElementById(container_id);
+    if (!container) return;
+
+    container.innerHTML = "";
+
+    if (issued_coupons.length === 0) {
+        const div = document.createElement("div");
+        div.className = "not_any_issued_coupon_div";
+        div.textContent = "No coupons issued yet";
+        container.appendChild(div);
+        return;
+    }
+
+    issued_coupons.forEach(coupon => {
+        const wrapper = document.createElement("div");
+        wrapper.className = "display_coupon_div";
+
+        const name = document.createElement("div");
+        name.innerHTML = `<b>Name:</b> ${coupon.name}`;
+
+        const date = document.createElement("div");
+        date.innerHTML = `<b>Date:</b> ${coupon.date_from} - ${coupon.date_to}`;
+
+        const description = document.createElement("div");
+        description.innerHTML = `<b>Description:</b> ${coupon.description}`;
+
+        const count = document.createElement("div");
+        count.innerHTML = `<b>Count:</b> ${coupon.total_count}`;
+
+        wrapper.appendChild(name);
+        wrapper.appendChild(date);
+        wrapper.appendChild(description);
+        wrapper.appendChild(count);
+
+        container.appendChild(wrapper);
+    });
+}
+
 
 document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("mint_shortcut").onclick = function () { showView("mint_view", this); };
@@ -163,10 +206,37 @@ document.addEventListener("DOMContentLoaded", () => {
         address: "Main Street 1"
     };
 
+    const fake_coupons_client = [
+        {
+            name: "November Campaign 2025",
+            date_from: "2025-11-01",
+            date_to: "2025-11-30",
+            description: "20% off on all items",
+            total_count: 1
+        },
+        {
+            name: "Black Friday 2025",
+            date_from: "2025-11-28",
+            date_to: "2025-11-29",
+            description: "Buy 1 get 1 free",
+            total_count: 5
+        },
+        {
+            name: "New Year 2026",
+            date_from: "2025-12-31",
+            date_to: "2026-01-05",
+            description: "10$ discount for purchases over 100$",
+            total_count: 2
+        }
+    ];
+
+
     show_coupons("show_view", fake_data);
     add_redeemers() // mint view
 
     add_profile_data(fake_profile_data);
+    show_client_coupons("show_client_view", fake_coupons_client);
+
 
 });
 

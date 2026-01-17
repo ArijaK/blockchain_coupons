@@ -11,6 +11,7 @@
 
   <nav id="navigation">
     <div class="left-buttons">
+      <button id="demo_client" onclick="showView('client_view')"></button>
       <button id="mint_shortcut" onclick="showView('mint_view')" class="active">Mint Coupons</button>
       <button id="show_shortcut" onclick="showView('show_view')">Show Coupons</button>
     </div>
@@ -81,7 +82,12 @@
       <div><span>E-mail:</span><span></span></div>
       <div><span>Address:</span><span></span></div>
     </div>
-   
+
+    <div id="client_view">
+      <div class="title">Show my coupons</div>
+      <div id="show_client_view"></div>
+    </div>
+
 
   </main>
   <script src="script.js"></script>
