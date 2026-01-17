@@ -4,7 +4,7 @@ Necessary dependencies can be installed by running:
 
     npm install
 
-Contains simple TypeScript scripts to check connectivity (without running backend service). To execute them, call:
+Contains simple TypeScript scripts to check connectivity (without running backend service) or  request sending (without frontend). To execute them, call:
 
     npx ts-node ./test/test_example.ts
 
