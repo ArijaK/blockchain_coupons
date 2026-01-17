@@ -1,6 +1,7 @@
 import fastify from 'fastify'
 import fastifyCors from '@fastify/cors'
 import { blockchainRoutes, couponsRoutes } from './api/routes.js'
+import { startIndexer } from './indexer/indexer.js'
 
 const server = fastify()
 
@@ -25,6 +26,8 @@ server.register(fastifyCors, {
 // NOTE: This should be how we structure frontend calls now
 server.register(couponsRoutes, { prefix: "/coupons"});
 server.register(blockchainRoutes, { prefix: "/blockchain"});
+
+startIndexer();
 
 // OLD frontend
 server.post('/createCoupon', async (request, reply) => {
