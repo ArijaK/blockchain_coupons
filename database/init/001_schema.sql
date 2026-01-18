@@ -22,7 +22,7 @@ CREATE TABLE issuers (
 -- Coupons
 CREATE TABLE coupon_types (
   token_id NUMERIC(78, 0) NOT NULL PRIMARY KEY, -- ID (uint256) on blockchain
-  coupon_name VARCHAR(63) NOT NULL,
+  coupon_name VARCHAR(63),
   -- If this is confusing (must try first to come to such conclusion), may use NULL
   valid_from TIMESTAMP NOT NULL DEFAULT 'epoch',
   valid_to TIMESTAMP NOT NULL DEFAULT 'infinity',
