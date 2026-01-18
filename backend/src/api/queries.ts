@@ -43,8 +43,7 @@ export const interQueries = {
       `UPDATE coupons
         SET retailer_id = $1,
             redeemed_at = $2
-        WHERE coupon_id = $3;
-        );`,
+        WHERE coupon_id = $3;`,
       [retailer.toUpperCase(), date.toISOString(), BigInt(coupon)]
     );
   }

@@ -79,14 +79,14 @@ async function main() {
   const trans = await send_request(
     "POST", `${base}/blockchain/transfer`,
     {
-      "from": "0x70997970c51812dc3a010c7d01b50e0d17dc79c8",
-      "to": "0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc",
-      "id": "1",
-      "amount": 5
+      from: "0x70997970c51812dc3a010c7d01b50e0d17dc79c8",
+      to: "0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc",
+      id: 1,
+      amount: 5
     }
   );
   console.log("Transfer response: ", trans);
-  await delay(1000);  // NOTE: Because otherwise the calls are too fast for blockchain
+  await delay(2000);  // NOTE: Because otherwise the calls are too fast for blockchain
 
   console.log("\nFetching all user coupons (USER=0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc)");
   const coupons = await send_request(

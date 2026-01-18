@@ -40,20 +40,17 @@ export const interServices = {
 
   async redeemCoupons(data: RedeeemCouponsInput) {
     const response = await couponsService.getCouponByIDDetailed(BigInt(data.coupon));
+    const now = new Date();
 
-    if (response.status == 200) {
-      const now = new Date();
+    // if (response.data.status == 1 && now < response.data.valid_to && now > response.data.valid_from) {
+    const tx = await blockchainService.redeemCoupon(data.owner, response.type_id);
 
-      if (response.data.status == 1 && now < response.data.valid_to && now > response.data.valid_from) {
-        const tx = await blockchainService.redeemCoupon(data.owner, response.data.token_id);
-
-        if (tx != null) {
-          await interQueries.updateRedemption(data.retailer, data.coupon);
-        }
-      }
+    if (tx != null) {
+      await interQueries.updateRedemption(data.retailer, data.coupon);
     }
+    // }
 
-    return response.status;
+    return tx;
   }
 
 }
