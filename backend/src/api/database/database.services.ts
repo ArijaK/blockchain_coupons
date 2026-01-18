@@ -1,6 +1,6 @@
 // Functionality that calls database
 
-import { couponsQueries } from "./queries.js";
+import { couponsQueries } from "./database.queries.js";
 
 export const couponsService = {
   getCouponByID(id: bigint) {

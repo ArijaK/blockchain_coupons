@@ -1,7 +1,8 @@
 // Endpoint definition
 
 import type { FastifyInstance } from "fastify";
-import { blockchainController, couponsController } from "./controllers.js";
+import { couponsController } from "./database/database.controllers.js";
+import { blockchainController } from "./blockchain/blockchain.controllers.js";
 
 export async function couponsRoutes(fastify: FastifyInstance) {
   fastify.get("/:id", couponsController.getCoupon);

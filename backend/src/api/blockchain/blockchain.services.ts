@@ -1,6 +1,6 @@
 // Functionality that calls blockchain
 
-import { coupons } from "../services/blockchain.js";
+import { coupons } from "../../services/blockchain.js";
 
 export const blockchainService = {
   async mintCoupons(to: string, amount: bigint) {
@@ -8,7 +8,6 @@ export const blockchainService = {
     return tx.wait(); // Confirmation
   },
 
-  /// TODO: Must update with redemption logic
   async redeemCoupon(from: string, coupon_id: bigint) {
     const tx = await coupons.redeem(from, coupon_id);
     return tx.wait();
@@ -28,5 +27,4 @@ export const blockchainService = {
     const tx = await coupons.backendTransfer(from, to, id, amount);
     return tx.wait();
   },
-  /// TODO: Just realised we cannot simply burn things without redeeming them.
 };
