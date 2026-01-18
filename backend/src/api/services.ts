@@ -3,7 +3,7 @@
 import { couponInputToRow, issuerInputToRow } from "./api-database-map.js";
 import { blockchainService } from "./blockchain/blockchain.services.js";
 import { couponsService } from "./database/database.services.js";
-import type { AddCouponsInput, AddIssuerInput } from "./interfaces.js";
+import type { AddCouponsInput, AddIssuerInput, RedeeemCouponsInput } from "./interfaces.js";
 import { interQueries, waitForCouponMint } from "./queries.js";
 
 export const interServices = {
@@ -34,9 +34,26 @@ export const interServices = {
       await interQueries.updateCouponType(row);
       await interQueries.addRetailer(tokenID, data.retailers);
     }
-    
+
     return tx;
+  },
+
+  async redeemCoupons(data: RedeeemCouponsInput) {
+    const response = await couponsService.getCouponByIDDetailed(BigInt(data.coupon));
+
+    if (response.status == 200) {
+      const now = new Date();
+
+      if (response.data.status == 1 && now < response.data.valid_to && now > response.data.valid_from) {
+        const tx = await blockchainService.redeemCoupon(data.owner, response.data.token_id);
+
+        if (tx != null) {
+          await interQueries.updateRedemption(data.retailer, data.coupon);
+        }
+      }
+    }
+
+    return response.status;
   }
 
-  
 }

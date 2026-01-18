@@ -23,4 +23,5 @@ export async function blockchainRoutes(fastify: FastifyInstance) {
 export async function intraRoutes(fastify: FastifyInstance) {
   fastify.post("/issuer-add", interController.addIssuer);
   fastify.post("/coupons-create", interController.createCoupons);
+  fastify.post("/redeem", interController.redeemCoupons);
 }

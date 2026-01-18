@@ -8,6 +8,16 @@ export const couponsQueries = {
       [id]
     ).then(r => r.rows[0]);
   },
+
+  async findByIDDetailed(id: bigint) {
+    return db.query(
+      `SELECT ci.*, ct.valid_from, ct.valid_to
+        FROM coupons ci
+        JOIN coupon_types ct ON ci.type_id = ct.token_id
+        WHERE ci.coupon_id = $1;`,
+      [id]
+    ).then(r => r.rows[0]);
+  },
   
   async findByOwner(address: string) {
     const r = await db.query(

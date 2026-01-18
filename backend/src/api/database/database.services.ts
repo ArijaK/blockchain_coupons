@@ -7,6 +7,10 @@ export const couponsService = {
     return couponsQueries.findByID(id);
   },
 
+  getCouponByIDDetailed(id: bigint) {
+    return couponsQueries.findByIDDetailed(id);
+  },
+
   getCouponsByOwner(address: string) {
     return couponsQueries.findByOwner(address);
   },
