@@ -12,7 +12,7 @@ export const couponsQueries = {
   async findByOwner(address: string) {
     const r = await db.query(
       "SELECT * FROM coupons WHERE owner_id = $1;",
-      [address]
+      [address.toUpperCase()]
     );
     return r.rows;
   },
@@ -20,7 +20,7 @@ export const couponsQueries = {
   async findByIssuer(address: string) {
     const r = await db.query(
       "SELECT * FROM coupon_types WHERE issuer_id = $1;",
-      [address]
+      [address.toUpperCase()]
     );
     return r.rows;
   }

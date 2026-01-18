@@ -11,13 +11,13 @@ export async function handleTransferSingle(event: TransferSingleEvent) {
     await db.query(
       `INSERT INTO coupon_types (token_id, amount, issuer_id)
         VALUES ($1, $2, $3);`,
-      [id.toString(), 1, to]
+      [id, 1, to.toUpperCase()]
     );
     for (let i = 0; i < amount; i++) {
       await db.query(
         `INSERT INTO coupons (type_id, status, owner_id)
          VALUES ($1, $2, $3);`,
-        [id.toString(), 1, to]
+        [id, 1, to.toUpperCase()]
       );
     }
     return;
@@ -38,7 +38,7 @@ export async function handleTransferSingle(event: TransferSingleEvent) {
           ORDER BY coupon_id
           LIMIT $3
         );`,
-      [from, id.toString(), amount]
+      [from.toUpperCase(), id, amount]
     );
     return;
   }
@@ -56,6 +56,6 @@ export async function handleTransferSingle(event: TransferSingleEvent) {
         ORDER BY coupon_id
         LIMIT $4
       );`,
-    [to, from, id.toString(), amount]
+    [to.toUpperCase(), from.toUpperCase(), id, amount]
   );
 }

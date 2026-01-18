@@ -7,7 +7,7 @@ export const interQueries = {
     await db.query(
       `INSERT INTO issuers (account_id, issuer_name, email, phone, country, city, address, postal_code, description)
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9);`,
-      [data.account_id, data.issuer_name, data.email, data.phone, 
+      [data.account_id.toUpperCase(), data.issuer_name, data.email, data.phone, 
         data.country, data.city, data.address, data.postal_code, data.description]
     );
   },
@@ -31,7 +31,7 @@ export const interQueries = {
         db.query(
           `INSERT INTO redemption_places (token_id, retailer_id)
             VALUES ($1, $2)`,
-          [coupon_type, retailer_id]
+          [coupon_type, retailer_id.toUpperCase()]
         )
       )
     )
@@ -45,7 +45,7 @@ export async function waitForCouponMint(issuer: string, amount: bigint) {
   for (;;) {
     const row = await db.query(
       `SELECT * FROM coupon_types WHERE issuer_id = $1 AND amount = $2 ORDER BY token_id DESC LIMIT 1`,
-      [issuer, amount]
+      [issuer.toUpperCase(), amount]
     );
 
     if (row.rows.length > 0) {
