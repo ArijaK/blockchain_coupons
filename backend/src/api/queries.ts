@@ -44,10 +44,15 @@ export const interQueries = {
 export async function waitForCouponMint(issuer: string, amount: bigint) {
   for (;;) {
     const row = await db.query(
-      `SELECT * FROM coupon_types WHERE issuer_id = $1 AND amount = $2 ORDER BY token_id DESC LIMIT 1`,
+      `SELECT *
+      FROM coupon_types
+      WHERE issuer_id = $1
+        AND amount = $2
+      ORDER BY token_id DESC
+      LIMIT 1;`,
       [issuer.toUpperCase(), amount]
     );
-
+    
     if (row.rows.length > 0) {
       return row.rows[0];
     }

@@ -11,7 +11,7 @@ export async function handleTransferSingle(event: TransferSingleEvent) {
     await db.query(
       `INSERT INTO coupon_types (token_id, amount, issuer_id)
         VALUES ($1, $2, $3);`,
-      [id, 1, to.toUpperCase()]
+      [id, value, to.toUpperCase()]
     );
     for (let i = 0; i < amount; i++) {
       await db.query(
