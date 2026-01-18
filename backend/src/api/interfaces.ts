@@ -22,6 +22,8 @@ export interface AddCouponsInput {
   retailers: string[];
 }
 
-// export interface AddIssuerResult {
-//   txHash: string;
-// }
+export interface RedeeemCouponsInput {
+  coupon: string,
+  owner: string,
+  retailer: string
+}

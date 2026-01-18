@@ -20,9 +20,11 @@ export interface AddCouponRow {
   description:string;
 }
 
-/// TODO
 export interface UpdateRedeemRow {
-  retailer: string;
+  coupon_id: string,
+  type_id: string,
+  owner_id: string,
+  retailer_id: string
 }
 
 
