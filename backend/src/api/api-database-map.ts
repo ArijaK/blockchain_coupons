@@ -1,5 +1,5 @@
-import type { AddCouponRow, AddIssuerRow } from "./database.interfaces.js";
-import type { AddCouponsInput, AddIssuerInput } from "./interfaces.js";
+import type { AddCouponRow, AddIssuerRow, UpdateRedeemRow } from "./database.interfaces.js";
+import type { AddCouponsInput, AddIssuerInput, RedeeemCouponsInput } from "./interfaces.js";
 
 
 export function issuerInputToRow(data: AddIssuerInput): AddIssuerRow {
@@ -25,5 +25,14 @@ export function couponInputToRow(data: AddCouponsInput, token_id: string): AddCo
     amount: data.amount,
     issuer_id: data.issuer,
     description: data.description
+  };
+}
+
+export function redeemInputToRow(data: RedeeemCouponsInput, token_id: string): UpdateRedeemRow {
+  return {
+    coupon_id: data.coupon,
+    type_id: token_id,
+    owner_id: data.owner,
+    retailer_id: data.retailer
   };
 }
