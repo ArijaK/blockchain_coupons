@@ -16,14 +16,14 @@ export function issuerInputToRow(data: AddIssuerInput): AddIssuerRow {
   };
 }
 
-// function CouponInputToRow(data: AddCouponsInput): AddCouponRow {
-//   return {
-//     token_id: 
-//     coupon_name: string;
-//     valid_from: string;
-//     valid_to: string;
-//     amount: string;
-//     issuer_id: string;
-//     description:string;
-//   };
-// }
+export function couponInputToRow(data: AddCouponsInput, token_id: string): AddCouponRow {
+  return {
+    token_id: token_id,
+    coupon_name: data.name,
+    valid_from: data.valid_from,
+    valid_to: data.valid_to,
+    amount: data.amount,
+    issuer_id: data.issuer,
+    description: data.description
+  };
+}

@@ -22,13 +22,6 @@ export interface AddCouponsInput {
   retailers: string[];
 }
 
-/// TODO
-export interface RedeemInput {
-  coupon_id: string;
-  retailer: string;
-}
-
-
 // export interface AddIssuerResult {
 //   txHash: string;
 // }

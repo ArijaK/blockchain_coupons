@@ -20,11 +20,6 @@ export interface AddCouponRow {
   description:string;
 }
 
-export interface AddRedemptionPlacesRow {
-  token_id: string;
-  retailer: string;
-}
-
 /// TODO
 export interface UpdateRedeemRow {
   retailer: string;
