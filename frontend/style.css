@@ -255,4 +255,25 @@ main {
 .display_coupon_div {
     padding-left: 8px;
     padding-top: 4px;
+    display: grid;
+    grid-template-columns: 60% 40%;
+
+}
+
+
+.coupon_info {
+    float: left;
+
+}
+
+.coupon_actions {
+    float: right;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+}
+
+.qr_container {
+    margin-top: 8px;
 }

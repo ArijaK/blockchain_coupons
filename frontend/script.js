@@ -13,6 +13,14 @@ function showView(viewId, button) {
     if (viewId == "client_view") {
         document.getElementById("navigation").style.display = "none";
     }
+    if (viewId == "show_view") {
+        const container = document.getElementById(viewId);
+        if (!container) return;
+        const div = document.createElement("div");
+        div.className = "not_any_issued_coupon_div";
+        div.textContent = "No coupons issued yet";
+        container.appendChild(div);
+    }
 
     // remove active class from all buttons
     const buttons = document.querySelectorAll("#navigation button");
@@ -73,6 +81,7 @@ function add_profile_data(profile_data) {
 }
 
 function show_coupons(container_id, issued_coupons) {
+    console.log(issued_coupons)
     const container = document.getElementById(container_id);
     if (!container) return;
 
@@ -94,9 +103,9 @@ function show_coupons(container_id, issued_coupons) {
         first_line.className = "line_in_wrapper";
 
         const name = document.createElement("span");
-        name.innerHTML = `<b>Name:</b> ${coupon.name}`;
+        name.innerHTML = `<b>Name:</b> ${coupon.coupon_name}`;
         const date = document.createElement("span");
-        date.innerHTML = `<b>Date:</b> ${coupon.date_from}  -  ${coupon.date_to}`;
+        date.innerHTML = `<b>Date:</b> ${coupon.valid_from}  -  ${coupon.valid_to}`;
 
         // left 2nd line
         const second_line = document.createElement("div");
@@ -104,11 +113,11 @@ function show_coupons(container_id, issued_coupons) {
         second_line.className = "line_in_wrapper counts";
 
         const count = document.createElement("span");
-        count.innerHTML = `<b>Total count:</b> ${coupon.total_count}`;
-        const redeemed = document.createElement("span");
-        redeemed.innerHTML = `<b>Redeemed count:</b> ${coupon.redeemed_count}`;
-        const not_issued = document.createElement("span");
-        not_issued.innerHTML = `<b>Not issued count:</b> ${coupon.not_issued_count}`;
+        count.innerHTML = `<b>Total count:</b> ${coupon.amount}`;
+        // const redeemed = document.createElement("span");
+        // redeemed.innerHTML = `<b>Redeemed count:</b> ${coupon.redeemed_count}`;
+        // const not_issued = document.createElement("span");
+        // not_issued.innerHTML = `<b>Not issued count:</b> ${coupon.not_issued_count}`;
         const expand_view = document.createElement("button");
         expand_view.className = "button";
         expand_view.appendChild(document.createTextNode("See more")); // TODO: this button does nothing, but should open view
@@ -119,8 +128,8 @@ function show_coupons(container_id, issued_coupons) {
 
         // append right
         second_line.appendChild(count);
-        second_line.appendChild(redeemed);
-        second_line.appendChild(not_issued);
+        // second_line.appendChild(redeemed);
+        // second_line.appendChild(not_issued);
         second_line.appendChild(expand_view);
 
         // append all
@@ -130,6 +139,7 @@ function show_coupons(container_id, issued_coupons) {
         container.appendChild(wrapper);
     });
 }
+
 
 function show_client_coupons(container_id, issued_coupons) {
     const container = document.getElementById(container_id);
@@ -149,47 +159,77 @@ function show_client_coupons(container_id, issued_coupons) {
         const wrapper = document.createElement("div");
         wrapper.className = "display_coupon_div";
 
+        // left side info
+        const info = document.createElement("div");
+        info.className = "coupon_info";
+
         const name = document.createElement("div");
-        name.innerHTML = `<b>Name:</b> ${coupon.name}`;
+        name.innerHTML = `<b>Name:</b> ${coupon.coupon_name}`;
 
         const date = document.createElement("div");
-        date.innerHTML = `<b>Date:</b> ${coupon.date_from} - ${coupon.date_to}`;
+        date.innerHTML = `<b>Date:</b> ${coupon.valid_from} - ${coupon.valid_to}`;
 
         const description = document.createElement("div");
         description.innerHTML = `<b>Description:</b> ${coupon.description}`;
 
         const count = document.createElement("div");
-        count.innerHTML = `<b>Count:</b> ${coupon.total_count}`;
+        count.innerHTML = `<b>Count:</b> ${coupon.amount}`;
+
+
+
+        info.appendChild(name);
+        info.appendChild(date);
+        info.appendChild(description);
+        info.appendChild(count);
+
+        const retailers = document.createElement("div");
+
+        if (coupon.retailers && coupon.retailers.length > 0) {
+            retailers.innerHTML = `<b>Retailers:</b> ${coupon.retailers.join(", ")}`;
+            info.appendChild(retailers);
+        }
+
+        // right side QR button
+        const rightSide = document.createElement("div");
+        rightSide.className = "coupon_actions";
 
         const qrBtn = document.createElement("button");
+        qrBtn.className = "button";
         qrBtn.textContent = "Show QR";
+
 
         const qrDiv = document.createElement("div");
         qrDiv.className = "qr_container";
 
         qrBtn.addEventListener("click", () => {
-            generateQR(qrDiv, coupon);
+            if (qrDiv.innerHTML.trim() === "") {
+                generateQR(qrDiv, coupon);
+                qrBtn.textContent = "Hide QR";
+            } else {
+                qrDiv.innerHTML = "";
+                qrBtn.textContent = "Show QR";
+            }
         });
 
-        wrapper.appendChild(qrBtn);
-        wrapper.appendChild(qrDiv);
+        rightSide.appendChild(qrDiv);
+        rightSide.appendChild(qrBtn);
 
-
-        wrapper.appendChild(name);
-        wrapper.appendChild(date);
-        wrapper.appendChild(description);
-        wrapper.appendChild(count);
+        // put info and actions in wrapper
+        wrapper.appendChild(info);
+        wrapper.appendChild(rightSide);
 
         container.appendChild(wrapper);
     });
 }
 
 
+
+
 document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("mint_shortcut").onclick = function () { showView("mint_view", this); };
     // document.getElementById("show_shortcut").onclick = function () { showView("show_view", this); };
     document.getElementById("show_shortcut").onclick = function () {
-        showView("show_view", this);
+        // showView("show_view", this);
 
         fetchCreatedCoupons(ISSUER_USER_ADDRESS).then(coupons => {
             show_coupons("show_view", coupons);
@@ -201,18 +241,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     ///////////////////////// TODO: replace with info from backend / blockchain  (because need to know usage) about coupons that this person has
     const fake_data = [{
-        name: "fake_data_November Campaign 2025",
-        date_from: "2026-01-01",
-        date_to: "2026-01-15",
-        total_count: 100,
+        coupon_name: "fake_data_November Campaign 2025",
+        valid_from: "2026-01-01",
+        valid_to: "2026-01-15",
+        amount: 100,
         redeemed_count: 50,
         not_issued_count: 40
     },
     {
-        name: "fake_data_December Promo",
-        date_from: "2026-01-20",
-        date_to: "2026-01-31",
-        total_count: 20000,
+        coupon_name: "fake_data_December Promo",
+        valid_from: "2026-01-20",
+        valid_to: "2026-01-31",
+        amount: 20000,
         redeemed_count: 100,
         not_issued_count: 50
     }];
@@ -226,25 +266,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const fake_coupons_client = [
         {
-            name: "November Campaign 2025",
-            date_from: "2025-11-01",
-            date_to: "2025-11-30",
+            coupon_name: "March Campaign 2026",
+            valid_from: "2026-03-01",
+            valid_to: "2026-03-05",
             description: "20% off on all items",
-            total_count: 1
+            amount: 1,
+            retailers: ["Pams", "JDP"]
         },
         {
-            name: "Black Friday 2025",
-            date_from: "2025-11-28",
-            date_to: "2025-11-29",
+            coupon_name: "Easter 2026",
+            valid_from: "2026-04-01",
+            valid_to: "2026-06-20",
             description: "Buy 1 get 1 free",
-            total_count: 5
+            amount: 5,
+            retailers: ["Dimi"]
         },
         {
-            name: "New Year 2026",
-            date_from: "2025-12-31",
-            date_to: "2026-01-05",
+            coupon_name: "New Year 2026",
+            valid_from: "2025-12-31",
+            valid_to: "2026-01-05",
             description: "10$ discount for purchases over 100$",
-            total_count: 2
+            amount: 2,
+            retailers: ["Truuug"]
         }
     ];
 
@@ -253,10 +296,10 @@ document.addEventListener("DOMContentLoaded", () => {
     add_redeemers() // mint view
 
     add_profile_data(fake_profile_data);
-    // show_client_coupons("show_client_view", fake_coupons_client);
-    fetchOwnedCoupons(USER_ADDRESS).then(coupons => { // NOTE: does only once, might need to have refresh logic in client page
-        show_client_coupons("show_client_view", coupons);
-    });
+    show_client_coupons("show_client_view", fake_coupons_client);
+    // fetchOwnedCoupons(USER_ADDRESS).then(coupons => { // NOTE: does only once, might need to have refresh logic in client page
+    //     show_client_coupons("show_client_view", coupons);
+    // });
 
 
 });
@@ -312,7 +355,7 @@ async function fetchCreatedCoupons(userAddress) {
     }
 }
 
-async function fetchUserCoupons(userAddress) {
+async function fetchOwnedCoupons(userAddress) {
     const base = "http://localhost:8000";
     const res = await fetch(`${base}/coupons/user/${userAddress}`);
 
@@ -322,17 +365,16 @@ async function fetchUserCoupons(userAddress) {
     return data;
 }
 
-async function fetchOwnedCoupons(address) {
-    const res = await fetch(`http://localhost:8000/coupons/user/${address}`);
-    if (!res.ok) return [];
-    return await res.json();
-}
 
 function generateQR(container, coupon) {
     container.innerHTML = "";
 
+    console.log(coupon)
+
+    console.log(coupon.coupon_name, USER_ADDRESS);
+
     const payload = JSON.stringify({
-        id: coupon.id,
+        id: coupon.coupon_name,
         addr: USER_ADDRESS
     });
 

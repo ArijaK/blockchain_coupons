@@ -20,3 +20,27 @@ INSERT INTO users (account_id) VALUES
   (UPPER('0xbda5747bfd65f08deb54cb465eb87d40e51b197e')),
   (UPPER('0xdd2fd4581271e230360230f9337d5c0430bf44c0')),
   (UPPER('0x8626f6940e2eb28930efb4cef49b2d1f2c9c1199'));
+
+
+INSERT INTO issuers (
+  account_id,
+  issuer_name,
+  email,
+  phone,
+  country,
+  city,
+  address,
+  postal_code,
+  description
+)
+VALUES (
+  '0X3C44CDDDB6A900FA2B585DD299E03D12FA4293BC',
+  'John doe',
+  'email@example.com',
+  '+123456789',
+  'Country',
+  'SQLCity',
+  'Street Address',
+  'Postal Code',
+  'Description of issuer. Grumpy.'
+);

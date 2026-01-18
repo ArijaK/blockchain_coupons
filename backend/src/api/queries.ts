@@ -7,8 +7,8 @@ export const interQueries = {
     await db.query(
       `INSERT INTO issuers (account_id, issuer_name, email, phone, country, city, address, postal_code, description)
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9);`,
-      [data.account_id.toUpperCase(), data.issuer_name, data.email, data.phone, 
-        data.country, data.city, data.address, data.postal_code, data.description]
+      [data.account_id.toUpperCase(), data.issuer_name, data.email, data.phone,
+      data.country, data.city, data.address, data.postal_code, data.description]
     );
   },
 
@@ -19,7 +19,7 @@ export const interQueries = {
         coupon_name = $1,
         valid_from = $2,
         valid_to = $3,
-        description = $4,
+        description = $4
       WHERE token_id = $5;`,
       [data.coupon_name, data.valid_from, data.valid_to, data.description, data.token_id]
     );
@@ -42,7 +42,7 @@ export const interQueries = {
 /// Wait for indexer to update data
 // NOTE: In the future should implement LISTEN/NOTIFY or other type logic
 export async function waitForCouponMint(issuer: string, amount: bigint) {
-  for (;;) {
+  for (; ;) {
     const row = await db.query(
       `SELECT *
       FROM coupon_types
@@ -52,7 +52,7 @@ export async function waitForCouponMint(issuer: string, amount: bigint) {
       LIMIT 1;`,
       [issuer.toUpperCase(), amount]
     );
-    
+
     if (row.rows.length > 0) {
       return row.rows[0];
     }
