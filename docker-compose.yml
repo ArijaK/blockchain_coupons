@@ -4,6 +4,13 @@ services:
     container_name: blockchain_server
     build: 
       context: ./blockchain
+   
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s -X POST http://localhost:8545 -H 'Content-Type: application/json' -d '{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"eth_chainId\",\"params\":[]}' | grep -q 'result'"]
+      interval: 2s
+      timeout: 2s
+      retries: 20
+
     ports:
       - "8545:8545"    # RPC port
       - "30303:30303"  # P2P port
@@ -45,12 +52,25 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - db
-      - blockchain
+      blockchain:
+        condition: service_healthy
+      db:
+        condition: service_healthy
     env_file:
       - ./backend/.env
     environment:
       RPC_URL: http://blockchain:8545
+    networks:
+      - devnet
+
+  deployer:
+    build:
+      context: ./blockchain
+    depends_on:
+      - blockchain
+    command: >
+      sh -c "sleep 5 &&
+            npx hardhat ignition deploy ./ignition/modules/Coupons.ts --network localhost"
     networks:
       - devnet
 

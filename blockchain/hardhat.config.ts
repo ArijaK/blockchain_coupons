@@ -20,6 +20,10 @@ export default defineConfig({
     },
   },
   networks: {
+    localhost: {
+      url: "http://blockchain:8545",
+      chainId: 31337
+    },
     hardhatMainnet: {
       type: "edr-simulated",
       chainType: "l1",

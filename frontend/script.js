@@ -161,6 +161,20 @@ function show_client_coupons(container_id, issued_coupons) {
         const count = document.createElement("div");
         count.innerHTML = `<b>Count:</b> ${coupon.total_count}`;
 
+        const qrBtn = document.createElement("button");
+        qrBtn.textContent = "Show QR";
+
+        const qrDiv = document.createElement("div");
+        qrDiv.className = "qr_container";
+
+        qrBtn.addEventListener("click", () => {
+            generateQR(qrDiv, coupon);
+        });
+
+        wrapper.appendChild(qrBtn);
+        wrapper.appendChild(qrDiv);
+
+
         wrapper.appendChild(name);
         wrapper.appendChild(date);
         wrapper.appendChild(description);
@@ -250,58 +264,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const form = document.querySelector('form');
 
-// form.addEventListener('submit', async (event) => {
-//     event.preventDefault(); // stop the page from reloading
 
-//     // Gather the form data
-//     const couponData = {
-//         name: document.getElementById('coupon_name').value,
-//         fromDate: document.getElementById('from_date_calendar').value,
-//         toDate: document.getElementById('to_date_calendar').value,
-//         count: parseInt(document.getElementById('count_input').value, 10),
-//         unique: document.querySelector('input[type="checkbox"]').checked,
-//         description: document.getElementById('text_description').value,
-//         redeemers: Array.from(document.querySelectorAll('#redeemer_list div')).map(el => el.textContent)
-//     };
-
-//     console.log("dump", couponData);
-
-//     try {
-//         const res = await fetch('http://localhost:8000/createCoupon', { // backend endpoint
-//             method: 'POST',
-//             headers: { 'Content-Type': 'application/json' },
-//             body: JSON.stringify(couponData)
-//         });
-
-//         const result = await res.json();
-//         console.log('Server response:', result);
-
-//     } catch (err) {
-//         console.error('Error sending data:', err);
-//     }
-// });
-form.addEventListener('submit', async (event) => {
+form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     const couponData = {
-        to: ISSUER_USER_ADDRESS,
-        amount: parseInt(document.getElementById('count_input').value, 10)
+        name: document.getElementById("coupon_name").value,
+        valid_from: document.getElementById("from_date_calendar").value,
+        valid_to: document.getElementById("to_date_calendar").value,
+        // amount: document.getElementById("count_input").value,
+        amount: document.getElementById("count_input").value.toString(),
+
+        issuer: ISSUER_USER_ADDRESS,
+        description: document.getElementById("text_description").value,
+        retailers: [] // fill this from your retailer input list
     };
 
-    try {
-        const res = await fetch('http://localhost:8000/blockchain/mint', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(couponData)
-        });
+    console.log("Sending coupon:", couponData);
 
-        const result = await res.json();
-        console.log('Mint response:', result);
 
-    } catch (err) {
-        console.error('Error sending data:', err);
-    }
+    const res = await fetch("http://localhost:8000/coupons-create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(couponData)
+    });
+
+    const result = await res.json();
+    console.log("Backend response:", result);
+
 });
+
+
 
 async function fetchCreatedCoupons(userAddress) {
     const base = "http://localhost:8000";
@@ -335,31 +328,20 @@ async function fetchOwnedCoupons(address) {
     return await res.json();
 }
 
+function generateQR(container, coupon) {
+    container.innerHTML = "";
 
-//////////////////////////////////////////////////////////////////////
-// const logDiv = document.getElementById("log");
+    const payload = JSON.stringify({
+        id: coupon.id,
+        addr: USER_ADDRESS
+    });
 
-// // Dummy function to simulate "create coupon"
-// function createCoupon() {
-//     const couponId = Math.floor(Math.random() * 1000);
-//     logDiv.innerHTML += `<p>Coupon created with ID: ${couponId}</p>`;
-//     return couponId;
-// }
+    new QRCode(container, {
+        text: payload,
+        width: 180,
+        height: 180,
+        correctLevel: QRCode.CorrectLevel.M
+    });
+}
 
-// // Dummy function to simulate "mint coupon"
-// function mintCoupon(couponId, amount) {
-//     logDiv.innerHTML += `<p>Minted ${amount} of coupon ${couponId}</p>`;
-// }
 
-// // Connect buttons to dummy functions
-// document.getElementById("createCouponBtn").onclick = () => {
-//     window.currentCoupon = createCoupon();
-// };
-
-// document.getElementById("mintCouponBtn").onclick = () => {
-//     if (!window.currentCoupon) {
-//         alert("Create a coupon first!");
-//         return;
-//     }
-//     mintCoupon(window.currentCoupon, 10);
-// };
