@@ -61,9 +61,7 @@ async function main() {
       issuer: "0x70997970c51812dc3a010c7d01b50e0d17dc79c8",
       description: "10 EUR discount on selected winter items.",
       retailers: [
-        "0x23618e81e3f5cdf7f54c3d65f7fbc0abf5b21e8f",
-        "0xa0ee7a142d267c1f36714e4a8f75612f20a79720",
-        "0xbcd4042de499d14e55001ccbb24a551f3b954096"
+        "0x70997970c51812dc3a010c7d01b50e0d17dc79c8"
       ]
     }
   );
@@ -81,35 +79,36 @@ async function main() {
   const trans = await send_request(
     "POST", `${base}/blockchain/transfer`,
     {
-      "from": "0x70997970c51812dc3a010c7d01b50e0d17dc79c8",
-      "to": "0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc",
-      "id": "1",
-      "amount": 5
+      from: "0x70997970c51812dc3a010c7d01b50e0d17dc79c8",
+      to: "0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc",
+      id: 1,
+      amount: 5
     }
   );
   console.log("Transfer response: ", trans);
-  await delay(1000);  // NOTE: Because otherwise the calls are too fast for blockchain
+  await delay(2000);  // NOTE: Because otherwise the calls are too fast for blockchain
 
-//   console.log("\nFetching all user coupons (USER=0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc)");
-//   const coupons = await send_request(
-//     "GET",
-//     `${base}/coupons/user/0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc`
-//   );
-//   console.log("Coupons: ", coupons);
+  console.log("\nFetching all user coupons (USER=0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc)");
+  const coupons = await send_request(
+    "GET",
+    `${base}/coupons/user/0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc`
+  );
+  console.log("Coupons: ", coupons);
 
-//   console.log("\nFetching single coupon (ID=0)");
-//   const coupon = await send_request("GET", `${base}/coupons/0`);
-//   console.log("Coupon: ", coupon);
+  console.log("\nFetching single coupon (ID=0)");
+  const coupon = await send_request("GET", `${base}/coupons/0`);
+  console.log("Coupon: ", coupon);
 
-//   console.log("\nRedeeming a coupon (ID=1)");
-//   const redemption = await send_request(
-//     "POST", `${base}/blockchain/redeem`,
-//     {
-//       coupon_id: 1,
-//       from: "0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc"
-//     }
-//   );
-//   console.log("Redemption response: ", redemption);
+  console.log("\nRedeeming a coupon (ID=1)");
+  const redemption = await send_request(
+    "POST", `${base}/redeem`,
+    {
+      coupon: 1,
+      owner: "0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc",
+      retailer: "0x70997970c51812dc3a010c7d01b50e0d17dc79c8"
+    }
+  );
+  console.log("Redemption response: ", redemption);
 }
 
 main().catch(err => {

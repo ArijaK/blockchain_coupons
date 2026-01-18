@@ -35,21 +35,33 @@ export const interQueries = {
         )
       )
     )
+  },
+
+  async updateRedemption(retailer: string, coupon: string) {
+    const date = new Date();
+    await db.query(
+      `UPDATE coupons
+        SET retailer_id = $1,
+            redeemed_at = $2
+        WHERE coupon_id = $3;`,
+      [retailer.toUpperCase(), date.toISOString(), BigInt(coupon)]
+    );
   }
 }
-
 
 /// Wait for indexer to update data
 // NOTE: In the future should implement LISTEN/NOTIFY or other type logic
 export async function waitForCouponMint(issuer: string, amount: bigint) {
   for (; ;) {
     const row = await db.query(
-      `SELECT *
+      `
+      SELECT *
       FROM coupon_types
       WHERE issuer_id = $1
         AND amount = $2
       ORDER BY token_id DESC
-      LIMIT 1;`,
+      LIMIT 1
+      `,
       [issuer.toUpperCase(), amount]
     );
 

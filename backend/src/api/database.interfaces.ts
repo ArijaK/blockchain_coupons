@@ -20,11 +20,4 @@ export interface AddCouponRow {
   description:string;
 }
 
-export interface UpdateRedeemRow {
-  coupon_id: string,
-  type_id: string,
-  owner_id: string,
-  retailer_id: string
-}
-
 
